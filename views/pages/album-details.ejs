@@ -1,0 +1,23 @@
+<%- include('../partials/head') %>
+
+<%- include('../partials/dialogs') %>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+
+<section class="sample-content">
+    <h2>Album Details</h2>
+    <p class="subhead mdl-color-text--grey-700">
+        View details of Google Photos albums, Click column header to sort.
+    </p>
+    <p class="subhead mdl-color-text--grey-700">
+        Total Number of Items (photos + videos) in all albums: <span id="total-num-items">0</span>
+        - <a href="/albumCacheReset">Force Data Refresh</a>
+    </p>
+    <div id="album-details"></div>
+</section>
+
+
+<%- include('../partials/js') %>
+<script src="/js/album-details.js"></script>
+
+<%- include('../partials/footer') %>
