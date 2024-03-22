@@ -179,7 +179,7 @@ app.get('/', (req, res) => {
     // Not logged in yet.
     res.render('pages/login');
   } else {
-    res.render('pages/frame');
+    res.render('pages/album-details');
   }
 });
 
@@ -211,7 +211,8 @@ app.get(
         'google', {failureRedirect: '/', failureFlash: true, session: true}),
     (req, res) => {
       // User has logged in.
-      logger.info('User has logged in.');
+      logger.info('/auth/google/callback User has logged in.');
+
       req.session.save(() => {
         res.redirect('/');
       });
@@ -244,6 +245,7 @@ app.get('/album-details', (req, res) => {
 // Returns a list of media items if the search was successful, or an error
 // otherwise.
 app.post('/loadFromSearch', async (req, res) => {
+  redirectUnlessAuthenticated(req, res);
   const authToken = req.user.token;
 
   logger.info('Loading images from search.');
@@ -299,6 +301,7 @@ app.post('/loadFromSearch', async (req, res) => {
 // Submits a search for all media items in an album to the Library API.
 // Returns a list of photos if this was successful, or an error otherwise.
 app.post('/loadFromAlbum', async (req, res) => {
+  redirectUnlessAuthenticated(req, res);
   const albumId = req.body.albumId;
   const userId = req.user.profile.id;
   const authToken = req.user.token;
@@ -319,6 +322,7 @@ app.post('/loadFromAlbum', async (req, res) => {
 
 // Returns all albums owned by the user.
 app.get('/getAlbums', async (req, res) => {
+  redirectUnlessAuthenticated(req, res);
   logger.info('Loading albums');
   const userId = req.user.profile.id;
 
@@ -351,10 +355,20 @@ app.get('/getAlbums', async (req, res) => {
 
 // Clear the cached albums owned by the user.
 app.get('/albumCacheReset', async (req, res) => {
+  redirectUnlessAuthenticated(req, res);
   logger.info('albumCacheReset');
   const userId = req.user.profile.id;
   albumCache.removeItem(userId);
   res.redirect('/album-details');
+});
+
+// Reauthenticate with google then go to page specified.
+app.get('/reauth/:page', async (req, res) => {
+  redirectUnlessAuthenticated(req, res);
+  logger.info('reauth then going to page: '+req.params.page);
+  // check req.isAuthenticated() ??
+  req.session.lastPage = req.params.page
+  res.redirect('/auth/google');
 });
 
 
@@ -364,6 +378,7 @@ app.get('/albumCacheReset', async (req, res) => {
 // returned, otherwise the search parameters that were used to load the photos
 // are resubmitted to the API and the result returned.
 app.get('/getQueue', async (req, res) => {
+  redirectUnlessAuthenticated(req, res);
   const userId = req.user.profile.id;
   const authToken = req.user.token;
 
@@ -412,6 +427,13 @@ function renderIfAuthenticated(req, res, page) {
     res.redirect('/');
   } else {
     res.render(page);
+  }
+}
+
+// Prevent node app from crashing when user is no longer authenticatedd
+function redirectUnlessAuthenticated(req, res) {
+  if (!req.user || !req.isAuthenticated()) {
+    res.redirect('/');
   }
 }
 
@@ -493,10 +515,20 @@ async function libraryApiSearch(authToken, parameters) {
           },
           body: JSON.stringify(parameters)
         });
+      // });
 
+      if (searchResponse.status == 401) {
+        logger.silly(JSON.stringify(searchResponse));
+        searchResponseJson = await searchResponse.json();
+        logger.silly(searchResponseJson);
+        // chad todo: passport.authenticate and then retry fetch
+      }
+      logger.debug(`Before checkStatus`);
       const result = await checkStatus(searchResponse);
+      logger.debug(`After checkStatus`);
 
       logger.debug(`Response: ${result}`);
+      //logger.silly(JSON.stringify(result));
 
       // The list of media items returned may be sparse and contain missing
       // elements. Remove all invalid elements.
@@ -543,6 +575,7 @@ async function libraryApiGetAlbums(authToken) {
 
   let parameters = new URLSearchParams();
   parameters.append('pageSize', config.albumPageSize);
+  logger.verbose('Using API cmd: /v1/albums?' + parameters);
 
   try {
     // Loop while there is a nextpageToken property in the response until all
@@ -586,6 +619,7 @@ async function libraryApiGetAlbums(authToken) {
     logger.error(JSON.stringify({'libraryApiGetAlbums Error':err}));
   }
 
+  logger.silly(JSON.stringify({'API response of first album':albums[0]}));
   logger.info('Albums loaded.');
   return {albums, error};
 }
@@ -593,6 +627,7 @@ async function libraryApiGetAlbums(authToken) {
 // Return the body as JSON if the request was successful, or thrown a StatusError.
 async function checkStatus(response){
   if (!response.ok){
+    logger.debug('checkStatus - not ok');
     // Throw a StatusError if a non-OK HTTP status was returned.
     let message = "";
     try{
@@ -603,6 +638,7 @@ async function checkStatus(response){
     }
     throw new StatusError(response.status, response.statusText, message);
   }
+  logger.debug('checkStatus - ok');
 
   // If the HTTP status is OK, return the body as JSON.
   return await response.json();

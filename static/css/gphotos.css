@@ -33,9 +33,15 @@
 
 /* override frame.css */
 
+/*
 .gp-button {
   height: 20px;
   line-height: 20px
+}
+*/
+
+.total-num-items {
+  font-weight: bold;
 }
 
 #albums.mdl-button {
@@ -49,11 +55,12 @@
   display: list-item;
 */
 }
-/*
+
 .sample-content {
-  padding: 2% 2%;
+  padding: 2% 4%;
+  background-color: rgba(255, 255, 255);
 }
-*/
+
 
 
 /* override material.xxxx.css */
@@ -62,3 +69,11 @@
   list-style-type: decimal;
 }
 
+/* match sample-content padding */
+.mdl-layout__header-row {
+  padding: 2% 4%;
+}
+
+.nodisplay {
+  display: none;
+}

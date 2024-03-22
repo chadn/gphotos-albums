@@ -11,7 +11,9 @@ User will need to be logged in to Google, and give read permissions for samo.org
 
 As author of this code, I created this mainly to serve my own need of seeing all the names of my albums in one place.  I have many albums, and Web app and Mobile app do not make this easy.  
 
-The code does use Google's OAuth 2.0, .
+I also wanted to experiment with Google APIs and Google Developers project, especially curious what data is made available about a project.
+
+The code does use Google's OAuth 2.0, and experimenting with this is also a reason I created this app.
 
 This app is based on [chadn/google-photos](https://github.com/chadn/google-photos), 
 which is forked from from [googlesamples/google-photos](https://github.com/googlesamples/google-photos),

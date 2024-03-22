@@ -63,6 +63,7 @@ function handleError(title, data) {
 
   if (data.status == 401) {
     // Authentication error. Redirect back to the log in screen.
+    // chad todo - this working?
     window.location = '/logout';
   } else if (data.status == 0) {
     // Server could not be reached from the request.

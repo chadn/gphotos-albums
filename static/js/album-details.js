@@ -33,6 +33,7 @@ function getAlbumData(cb) {
     success: (data) => {
       console.log('Loaded albums: ' + data.albums);
       data.totalMediaItemsCount = 0;
+      data.sharedAlbums = false;
       $.each(data.albums, (i, item) => {
         item.number = i + 1;
         item.idShort = item.id.substr(0, 11);
@@ -40,6 +41,12 @@ function getAlbumData(cb) {
         item.titleUrl += `title="photos.google.com/album ${item.title}" `
         item.titleUrl += `href="${item.productUrl}">${item.title}</a>`;
         data.totalMediaItemsCount += parseInt(item.mediaItemsCount);
+        if (item.shareInfo) {
+          data.sharedAlbums = true;
+          item.shared = "Yes";
+        } else {
+          item.shared = "No";
+        }
       });
       hideLoadingDialog();
       console.log('Albums loaded.');
@@ -57,17 +64,19 @@ function getAlbumData(cb) {
 function initHandsomeTable(albumData) {
   const container = document.querySelector('#album-details');
 
+  let cols = [
+    // { type: 'text', data: 'id',  title: 'album ID' },
+    {data: 'number', title: 'Original<br>Order', type: 'numeric', width: 70 },
+    {data: 'mediaItemsCount', title: "Number<br>of Items", type: 'numeric', width: 80},
+    //{data: 'shared', title: "Shared", width: 60},
+    //{data: 'idShort', title: "Album ID<br>(first 12)", width: 110},
+    //{data: 'title',  title: "Album Title"},
+    {data: 'titleUrl', title: "Album Title", renderer: "html"},
+  ];
   const hot = new Handsontable(container, {
     data: albumData,
     readOnly: true,
-    columns: [
-      // { type: 'text', data: 'id',  title: 'album ID' },
-      {data: 'number', title: 'Original<br>Order', type: 'numeric', width: 70 },
-      {data: 'mediaItemsCount', title: "Number<br>of Items", type: 'numeric', width: 80},
-      //{data: 'idShort', title: "Album ID<br>(first 12)", width: 110},
-      //{data: 'title',  title: "Album Title"},
-      {data: 'titleUrl', title: "Album Title", renderer: "html"},
-    ],
+    columns: cols,
     stretchH: 'last', // stretch last column, other columns should specify width.
     columnSorting: true,
     colHeaders: true,
