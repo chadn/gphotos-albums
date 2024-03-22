@@ -3,8 +3,35 @@ PARAM=$1
 DEBUG=$2
 
 usage() {
-	echo "Usage: $0 <start|stop|restart|status> [DEBUG]"
+	echo "Usage: $0 <start|stop|restart|status|service> [DEBUG]"
 	exit 1
+}
+
+serviceFile() {
+	cat <<SVCEOF
+# Linux users: stop, start, auto-restart node using systemd and .service file
+# systemctl start gphotos
+# systemctl stop gphotos
+# Example of gphotos.service below.  Once started this way, can vew log with microsecond timestamp:
+# journalctl -ef -o short-precise -u gphotos
+
+$ cat /usr/lib/systemd/system/gphotos.service
+[Unit]
+Description=Chad's gphotos node.js web app
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Restart=on-failure
+RestartSec=3s
+ExecStart=/bin/bash -c 'cd /home/chad/src/gphotos-albums && PATH=\$PATH:/home/chad/.nvm/versions/node/v20.11.1/bin/ node gphotos.js'
+#ExecStart=/bin/bash -c 'cd /home/chad/src/gphotos-albums && PATH=\$PATH:/home/chad/.nvm/versions/node/v20.11.1/bin/ DEBUG=TRUE node gphotos.js'
+User=chad
+
+[Install]
+WantedBy=multi-user.target
+
+SVCEOF
 }
 
 # Use a different name for app.js
@@ -17,6 +44,7 @@ APP=gphotos.js
 # no matter where called from, run from same dir as this script
 MYDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 LOGFILE=$MYDIR/node.log
+PIDFILE=$MYDIR/node.pid
 ERRORS=0
 CUR_PID=''
 
@@ -83,6 +111,7 @@ start() {
 	getCurPID
 	if [[ "$CUR_PID" != "" ]]; then
 		echo "Started node ${APP} in $MYDIR as PID=$CUR_PID";
+		echo $CUR_PID>>$PIDFILE
 		exit 0;
 	else
 		echo "Trouble starting node ${APP}";
@@ -97,6 +126,7 @@ redirectAllOutputToLogfile() {
 
 getCurPID
 case "$PARAM" in
+	service) serviceFile ;;
 	stop)    stopPID ;;
 	status)  checkConfig; status ;;
 	restart) checkConfig; stopPID; sleep 1; getCurPID; start ;;
