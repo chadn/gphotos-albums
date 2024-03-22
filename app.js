@@ -14,7 +14,6 @@ import winston from 'winston';
 import {auth} from './auth.js';
 import {config} from './config.js';
 import routes from './routes.js';
-import {fileURLToPath} from 'url';
 
 const app = express();
 const fileStore = sessionFileStore(session);
@@ -71,33 +70,6 @@ if (process.env.DEBUG) {
   logger.level = 'verbose';
 }
 
-
-// Set up static routes for hosted libraries.
-app.use(express.static('static'));
-app.use('/js',
-  express.static(
-    fileURLToPath(
-      new URL('./node_modules/jquery/dist/', import.meta.url)
-    ),
-  )
-);
-
-app.use(
-  '/fancybox',
-  express.static(
-    fileURLToPath(
-      new URL('./node_modules/@fancyapps/fancybox/dist/', import.meta.url)
-    ),
-  )
-);
-app.use(
-  '/mdlite',
-  express.static(
-    fileURLToPath(
-      new URL('./node_modules/material-design-lite/dist/', import.meta.url)
-    ),
-  )
-);
 
 
 // Parse application/json request data.

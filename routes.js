@@ -1,11 +1,40 @@
 'use strict';
 
-import {config} from './config.js';
 import passport from 'passport';
 import persist from 'node-persist';
 import fetch from 'node-fetch';
+import express from 'express';
 import { Router } from 'express';
+import {fileURLToPath} from 'url';
+import {config} from './config.js';
 const router = Router();
+
+
+// Set up static routes for hosted libraries.
+router.use(express.static('static'));
+router.use('/js',
+  express.static(
+    fileURLToPath(
+      new URL('./node_modules/jquery/dist/', import.meta.url)
+    ),
+  )
+);
+router.use(
+  '/fancybox',
+  express.static(
+    fileURLToPath(
+      new URL('./node_modules/@fancyapps/fancybox/dist/', import.meta.url)
+    ),
+  )
+);
+router.use(
+  '/mdlite',
+  express.static(
+    fileURLToPath(
+      new URL('./node_modules/material-design-lite/dist/', import.meta.url)
+    ),
+  )
+);
 
 
 // GET request to the root.
@@ -148,6 +177,13 @@ router.get('/reauth/:page', async (req, res) => {
   res.redirect('/auth/google');
 });
 
+
+// GET request to log out the user.
+// Destroy the current session and redirect back to the log in screen.
+router.get('/die', (req, res) => {
+  router.logger.info('Gonna die (test restart)')
+  gonna_die
+});
 
 // Temporarily cache a list of the albums owned by the user. This caches
 // the name and base Url of the cover image. This ensures that the app
