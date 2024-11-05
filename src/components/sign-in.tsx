@@ -8,7 +8,10 @@ export default function SignIn() {
         await signIn("google")
       }}
     >
-      <button type="submit">Signin with Google</button>
+      <button type="submit"
+      className="bg-white text-black p-1 rounded-md m-1 text-large shadow-lg"
+      >Signin with Google</button>
     </form>
   )
 } 
+ 
