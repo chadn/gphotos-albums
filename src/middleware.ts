@@ -1,19 +1,17 @@
-import { NextResponse, NextRequest } from 'next/server'
- 
-//export { auth as middleware } from "@/auth"
-
+//import { NextResponse, NextRequest } from 'next/server'
+export { auth as middleware } from "@/auth"
+/*
 export function middleware(request: NextRequest) {
   console.log(`middleware pathname: "${request.nextUrl.pathname}"`);
   if (request.nextUrl.pathname.startsWith('/m')) {
+    console.log(`middleware rewriting pathname`);
     return NextResponse.rewrite(new URL('/my_account', request.url))
   }
-  /*
   if (request.nextUrl.pathname.startsWith('/dashboard')) {
     return NextResponse.rewrite(new URL('/dashboard/user', request.url))
   }
-  */
 }
-
+*/
 console.log("middleware greetings, yo");
 
 // Or like this if you need to do something here.
@@ -25,8 +23,7 @@ console.log("middleware greetings, yo");
 export const config = {
   matcher: [
     // don't run middleware on api, / , static, image, or favicon.ico 
-    "/((?!api|/|_next/static|_next/image|favicon.ico).*)",
-
-    "/my-account"
+    //"/((?!api|/|_next/static|_next/image|favicon.ico).*)",
+    "/my-account",
   ],
 }
