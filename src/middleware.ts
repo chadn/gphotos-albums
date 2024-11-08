@@ -1,6 +1,22 @@
-export { auth as middleware } from "@/auth"
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+ 
+//export { auth as middleware } from "@/auth"
 
-console.log("middleware greetings!");
+export function middleware(request: NextRequest) {
+  console.log(`middleware pathname: "${request.nextUrl.pathname}"`);
+  /*
+  if (request.nextUrl.pathname.startsWith('/about')) {
+    return NextResponse.rewrite(new URL('/about-2', request.url))
+  }
+ 
+  if (request.nextUrl.pathname.startsWith('/dashboard')) {
+    return NextResponse.rewrite(new URL('/dashboard/user', request.url))
+  }
+  */
+}
+
+console.log("middleware greetings, yo");
 
 // Or like this if you need to do something here.
 // export default auth((req) => {
