@@ -1,3 +1,4 @@
+import React from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -38,9 +39,7 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-title" content="GetMovin" />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <header className="bg-slate-800 mb-5 py-1 px-2 mt-2 rounded-md flex justify-between">
           <span className="hover:underline">GPhotos Albums</span>
           <div className="hover:underline">
@@ -64,15 +63,15 @@ export default async function RootLayout({
               </form>
             ) : (
               <a
-              className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-              href="/login"
+                className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+                href="/login"
               >
                 LOGIN
               </a>
             )}
           </div>
         </header>
-        <div>{children}</div>        
+        <div>{children}</div>
       </body>
     </html>
   );

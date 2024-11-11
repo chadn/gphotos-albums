@@ -1,4 +1,5 @@
 import LoginLogout from "@/components/login-logout";
+import React from "react";
 
 async function page() {
   return (
