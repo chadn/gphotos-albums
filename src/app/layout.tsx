@@ -41,7 +41,9 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="flex flex-col gap-8 row-start-1 items-center sm:items-start">
+        <header className="bg-slate-800 mb-5 py-1 px-2 mt-2 rounded-md flex justify-between">
+          <span className="hover:underline">GPhotos Albums</span>
+          <div className="hover:underline">
             {session?.user ? (
               <form
                 action={async () => {
@@ -68,8 +70,9 @@ export default async function RootLayout({
                 LOGIN
               </a>
             )}
-        </div>
-        {children}
+          </div>
+        </header>
+        <div>{children}</div>        
       </body>
     </html>
   );
