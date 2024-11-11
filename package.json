@@ -1,6 +1,6 @@
 {
   "name": "gphotos-albums",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,10 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "19.0.0-rc-69d4b800-20241021",
-    "react-dom": "19.0.0-rc-69d4b800-20241021",
-    "next-auth": "beta",
-    "next": "15.0.1"
+    "react": "^18",
+    "react-dom": "^18",
+    "next-auth": "^5.0.0-beta.22",
+    "next": "14.2.14"
   },
   "devDependencies": {
     "typescript": "^5",
