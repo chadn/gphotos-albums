@@ -13,6 +13,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           response_type: 'code',
         },
       },
+      async profile(profile) {
+        return { ...profile };
+      },
     }),
   ],
   /*

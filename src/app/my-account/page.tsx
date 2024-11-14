@@ -9,6 +9,12 @@ async function page() {
   const userInfo = {
     name: user?.name,
     email: user?.email,
+    user: JSON.stringify(user, null, 2),
+    /*
+    given_name: session?.profile?.given_name || '-',
+    family_name: session?.profile?.family_name || '-',
+    picture: session?.profile?.picture || '-',
+    */
   };
   return (
     <>
