@@ -1,3 +1,4 @@
 #!/bin/sh
-# Disable concurent to run `check-types` after ESLint in lint-staged
-cd "$(dirname "$0")/.." && npx --no lint-staged --concurrent false
+. "$(dirname "$0")/_/husky.sh"
+
+npx lint-staged

@@ -5,27 +5,12 @@
 /.pnp
 .pnp.js
 
-# Database
-*.db
-
 # testing
 /coverage
 
-# storybook
-storybook-static
-*storybook.log
-
-# playwright
-/test-results/
-/playwright-report/
-/playwright/.cache/
-
 # next.js
-/.next
-/out
-
-# cache
-.swc/
+/.next/
+/out/
 
 # production
 /build
@@ -33,19 +18,25 @@ storybook-static
 # misc
 .DS_Store
 *.pem
-Thumbs.db
 
 # debug
 npm-debug.log*
-pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.pnpm-debug.log*
 
 # local env files
+.env
 .env*.local
-
-# local folder
-local
 
 # vercel
 .vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# next-sitemap
+robots.txt
+sitemap.xml
+sitemap-*.xml
