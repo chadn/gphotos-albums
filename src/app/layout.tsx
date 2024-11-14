@@ -17,10 +17,9 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   robots: { index: true, follow: true },
-  // !STARTERCONF this is the default favicon, you can generate your own from https://realfavicongenerator.net/
-  // ! copy to /favicon folder
   icons: {
-    icon: '/favicon/favicon.ico',
+    // make svg last - browsers will first try the last <link rel="icon", then if no work go to previous.
+    icon: ['/favicon/favicon.ico', '/favicon/favicon.svg'],
     shortcut: '/favicon/favicon-16x16.png',
     apple: '/favicon/apple-touch-icon.png',
   },
