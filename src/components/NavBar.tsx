@@ -3,7 +3,7 @@ import React from 'react';
 
 import { auth, signOut } from '@/auth';
 
-export default async function Nav() {
+export default async function NavBar() {
   const session = await auth();
   return (
     <nav className='flex items-center justify-between flex-wrap bg-primary-600 p-4'>

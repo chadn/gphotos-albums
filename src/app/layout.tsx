@@ -5,7 +5,7 @@ import '@/styles/globals.css';
 // !STARTERCONF This is for demo purposes, remove @/styles/colors.css import immediately
 import '@/styles/colors.css';
 
-import Nav from '@/components/Nav';
+import NavBar from '@/components/NavBar';
 
 import { siteConfig } from '@/constant/config';
 
@@ -58,7 +58,7 @@ export default async function RootLayout({
   return (
     <html>
       <body>
-        <Nav />
+        <NavBar />
         <div>{children}</div>
       </body>
     </html>
