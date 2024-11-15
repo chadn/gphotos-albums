@@ -9,7 +9,8 @@ async function page() {
   const userInfo = {
     name: user?.name,
     email: user?.email,
-    picture: user?.picture,
+    image: user?.image,
+    //picture: user?.picture,
     given_name: user?.given_name,
     family_name: user?.family_name,
   };
