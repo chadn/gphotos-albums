@@ -13,10 +13,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           response_type: 'code',
         },
       },
+      /*
       // must define types for profile variables that will be used, see types/next-auth.d.ts
       async profile(profile) {
         return { ...profile };
       },
+      */
     }),
   ],
   trustHost: true,
