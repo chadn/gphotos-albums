@@ -13,13 +13,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           response_type: 'code',
         },
       },
-      /*
+      // must define types for profile variables that will be used, see types/next-auth.d.ts
       async profile(profile) {
-        // ! Does this work? cannot access google profile info like given_name
-        // ! and user.image is empty 
         return { ...profile };
       },
-      */
     }),
   ],
   /*

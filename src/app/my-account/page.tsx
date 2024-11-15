@@ -9,13 +9,12 @@ async function page() {
   const userInfo = {
     name: user?.name,
     email: user?.email,
+    email_verified: user?.email_verified,
     image: user?.image,
-    // TODO: Need to update user type like here
-    // https://stackoverflow.com/questions/74425533/property-role-does-not-exist-on-type-user-adapteruser-in-nextauth
-    // https://github.com/nextauthjs/next-auth/issues/6455
-    //picture: user?.picture,
-    // given_name: user?.given_name,
-    // family_name: user?.family_name,
+    picture: user?.picture,
+    given_name: user?.given_name,
+    family_name: user?.family_name,
+    user: JSON.stringify(user),
   };
   return (
     <>
