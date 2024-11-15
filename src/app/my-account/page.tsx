@@ -9,11 +9,7 @@ async function page() {
   const userInfo = {
     name: user?.name,
     email: user?.email,
-    email_verified: user?.email_verified,
     image: user?.image,
-    picture: user?.picture,
-    given_name: user?.given_name,
-    family_name: user?.family_name,
     user: JSON.stringify(user),
   };
   return (
