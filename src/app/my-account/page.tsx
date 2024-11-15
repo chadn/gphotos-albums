@@ -9,12 +9,9 @@ async function page() {
   const userInfo = {
     name: user?.name,
     email: user?.email,
-    image: user?.image,
-    /*
-    given_name: session?.profile?.given_name || '-',
-    family_name: session?.profile?.family_name || '-',
-    picture: session?.profile?.picture || '-',
-    */
+    picture: user?.picture,
+    given_name: user?.given_name,
+    family_name: user?.family_name,
   };
   return (
     <>
