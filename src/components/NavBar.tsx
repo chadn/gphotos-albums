@@ -25,7 +25,7 @@ export default async function NavBar() {
             >
               <div className='flex items-center gap-2 text-white'>
                 <img
-                  alt={session.user.name || ''}
+                  alt={session.user.email || ''}
                   src={session.user.image || 'no-img-src'}
                   className='rounded-full object-cover'
                   width={30}
