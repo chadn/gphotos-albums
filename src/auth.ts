@@ -1,5 +1,24 @@
-import NextAuth from 'next-auth';
+import NextAuth, { type DefaultSession } from 'next-auth';
 import Google from 'next-auth/providers/google';
+
+declare module 'next-auth' {
+  /**
+   * Returned by `auth`, `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+   */
+  interface Session {
+    user: {
+      given_name: string;
+      family_name: string;
+      picture: string;
+      /**
+       * By default, TypeScript merges new interface properties and overwrites existing ones.
+       * In this case, the default session user properties will be overwritten,
+       * with the new ones defined above. To keep the default session user properties,
+       * you need to add them back into the newly declared interface.
+       */
+    } & DefaultSession['user'];
+  }
+}
 
 // Extending User object to include Google Profile using Typescript's Module Augmentation
 // https://authjs.dev/getting-started/typescript#module-augmentation
@@ -19,8 +38,8 @@ declare module 'next-auth' {
     email_verified: boolean;
   }
 }
-
-/*
+/* Hide below despite stackoverflow comment to use it, because:
+   Type error: Invalid module name in augmentation, module '@auth/core/adapters' cannot be found.
 declare module '@auth/core/adapters' {
   interface AdapterUser {
     // Adding additional properties here for Google profile:
@@ -53,6 +72,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    session({ session, user }) {
+      // `session.user.given_name` is now a valid property, and will be type-checked
+      // in places like `useSession().data.user` or `auth().user`
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          given_name: user.given_name,
+          picture: user.picture,
+        },
+      };
+    },
+  },
   /*
   pages: {
     signIn: '/login',
