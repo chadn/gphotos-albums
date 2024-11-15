@@ -9,9 +9,9 @@ export default async function NavBar() {
   return (
     <nav className='flex items-center justify-between flex-wrap bg-primary-600 p-4'>
       <div className='flex items-center flex-shrink-0 text-white mr-6'>
-        <span className='font-semibold text-xl tracking-tight'>
+        <a className='font-semibold text-xl tracking-tight' href='/'>
           GPhotos Albums
-        </span>
+        </a>
       </div>
       <div className='w-full block flex-grow lg:flex lg:items-center lg:w-auto'>
         <div className='text-sm lg:flex-grow'></div>
@@ -24,13 +24,15 @@ export default async function NavBar() {
               }}
             >
               <div className='flex items-center gap-2 text-white'>
-                <img
-                  alt={session.user.email || ''}
-                  src={session.user.image || 'no-img-src'}
-                  className='rounded-full object-cover'
-                  width={30}
-                  height={30}
-                />
+                <a href='/my-account'>
+                  <img
+                    alt={session.user.email || ''}
+                    src={session.user.image || 'no-img-src'}
+                    className='rounded-full object-cover'
+                    width={30}
+                    height={30}
+                  />
+                </a>
                 <button
                   className={cn(
                     'inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white',

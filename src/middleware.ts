@@ -25,7 +25,7 @@ export { auth as middleware } from '@/auth';
 //   }
 // }
 
-console.log('middleware greetings, yo');
+console.log('middleware greetings, yo. matcher: /my-account');
 
 // Or like this if you need to do something here.
 // export default auth((req) => {
