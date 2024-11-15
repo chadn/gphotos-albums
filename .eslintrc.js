@@ -17,6 +17,7 @@ module.exports = {
     'no-console': 'off', // TODO: should be 'warn'
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'react/no-unescaped-entities': 'off',
+    '@next/next/no-img-element': 'off', // allow img elements
 
     'react/display-name': 'off',
     'react/jsx-curly-brace-presence': [
