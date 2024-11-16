@@ -32,8 +32,10 @@ console.log('middleware greetings, yo. matcher: /my-account');
 //   console.log(req.auth) //  { session: { user: { ... } } }
 // })
 
-// Prevent access to any path listed in 'matcher' below
-// Read more: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
+// "matcher allows you to filter Middleware to run on specific paths."
+// https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
+// This means that middleware will not run on requests that match below.
+// tested: server logs only have console.log above on /my-account when user has logged in.
 export const config = {
   matcher: [
     /*
@@ -48,5 +50,3 @@ export const config = {
     //'/components',
   ],
 };
-console.log('middleware greetings, bu-bye.');
-//
