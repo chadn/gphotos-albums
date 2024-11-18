@@ -16,6 +16,10 @@ async function page() {
     <>
       <div>This is my account page</div>
       <pre className='p-2 rounded-md'>{JSON.stringify(userInfo, null, 2)}</pre>
+      <p>
+        Also see <a href='/homepage'>original boilerplate homepage</a> or the{' '}
+        <a href='/components'>boilerplate components</a>.
+      </p>
     </>
   );
 }
