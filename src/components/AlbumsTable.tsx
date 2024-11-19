@@ -18,6 +18,8 @@ export default function AlbumsDetail() {
 
   useEffect(() => {
     setIsLoading(true);
+    const startTime = new Date().getTime();
+
     fetch('/api/getAlbums')
       .then((response) => {
         if (!response.ok) {
@@ -26,8 +28,12 @@ export default function AlbumsDetail() {
         return response.json();
       })
       .then((data) => {
+        const endTime = new Date().getTime();
+        const apiResponseTime = endTime - startTime;
         //setData(data);
-        console.log(`/api/getAlbums: ${JSON.stringify(data)}`);
+        console.log(
+          `/api/getAlbums ${apiResponseTime}ms: ${JSON.stringify(data)}`
+        );
         setIsLoading(false);
       })
       .catch((e) => {
