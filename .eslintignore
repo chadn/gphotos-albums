@@ -1,1 +1,3 @@
 !.prettierrc.js
+public/js/common.js
+public/js/album-details.js

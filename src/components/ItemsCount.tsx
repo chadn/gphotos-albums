@@ -10,7 +10,8 @@ export default function ItemsCount() {
   return (
     <div className='flex flex-wrap gap-2 items-center justify-center'>
       <p className='subhead mdl-color-text--grey-700'>
-        {count} == Total Number of Items, photos + videos.
+        <span id='total-num-items'>{count}</span> == Total Number of Items,
+        photos + videos.
       </p>
       <Button onClick={() => setCount(count + 1)}>Click me</Button>
     </div>
