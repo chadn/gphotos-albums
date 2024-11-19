@@ -1,13 +1,19 @@
-import { NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 import { auth } from '@/auth';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({});
 
+  let useCache = true;
+  const params = request.nextUrl.searchParams;
+  if (params.has('useCache')) {
+    params.get('useCache').match(/^(0|false)$/) && (useCache = false);
+  }
   // TODO: Replace dummy data below with data from Google Photos API if authenticated
   return NextResponse.json({
+    useCache: useCache,
     albums: [
       {
         id: 'AC7OsWZSvKmd_BPEjRBdfHJ5K0MM4UdIqGjVgYLomvo7p7_ztWqDiMy4tSZuspFnS7z2E33Ny69t',
