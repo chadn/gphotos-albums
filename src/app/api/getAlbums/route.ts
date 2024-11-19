@@ -9,7 +9,8 @@ export async function GET(request: NextRequest) {
   let useCache = true;
   const params = request.nextUrl.searchParams;
   if (params.has('useCache')) {
-    params.get('useCache').match(/^(0|false)$/) && (useCache = false);
+    // added || '' to quiet Type error: Object is possibly 'null'.
+    (params.get('useCache') || '').match(/^(0|false)$/) && (useCache = false);
   }
   // TODO: Replace dummy data below with data from Google Photos API if authenticated
   return NextResponse.json({
