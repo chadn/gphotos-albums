@@ -9,8 +9,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   debug: !!process.env.AUTH_DEBUG,
   trustHost: true,
   callbacks: {
-    async jwt({ token, user, account, profile }) {
+    async jwt({ token, account, profile }) {
       // the following is also logged if AUTH_DEBUG is true
+      // so commenting out.
+
+      /*
+    async jwt({ token, user, account, profile }) {
       console.log(
         'auth.ts jwt cb',
         JSON.stringify({
@@ -20,9 +24,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           profile: profile,
         })
       );
-
+      */
       // add what we need to use to token, token info stored in cookies.
-      // only assign access_token if not already assigned
+      // only assign access_token if not already assigned - this cb gets called lots.
       token.given_name ??= profile?.given_name ? profile.given_name : null;
       token.access_token ??= account?.access_token
         ? account.access_token
