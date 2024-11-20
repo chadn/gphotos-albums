@@ -1,17 +1,17 @@
 /* MIT License
- * 
+ *
  * Copyright (c) 2024 Chad Norwood
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,9 +21,8 @@
  * SOFTWARE.
  */
 
-
 // Loads a list of all albums owned by the logged in user from the backend.
-// The backend returns a list of albums from the Library API that is 
+// The backend returns a list of albums from the Library API that is
 // prepared here for the sortable table.
 function getAlbumData(cb) {
   $.ajax({
@@ -37,27 +36,27 @@ function getAlbumData(cb) {
       $.each(data.albums, (i, item) => {
         item.number = i + 1;
         item.idShort = item.id.substr(0, 11);
-        item.titleUrl = '<a target="_blank" rel="noopener noreferrer" '
-        item.titleUrl += `title="photos.google.com/album ${item.title}" `
+        item.titleUrl = '<a target="_blank" rel="noopener noreferrer" ';
+        item.titleUrl += `title="photos.google.com/album ${item.title}" `;
         item.titleUrl += `href="${item.productUrl}">${item.title}</a>`;
         data.totalMediaItemsCount += parseInt(item.mediaItemsCount);
         if (item.shareInfo) {
           data.sharedAlbums = true;
-          item.shared = "Yes";
+          item.shared = 'Yes';
         } else {
-          item.shared = "No";
+          item.shared = 'No';
         }
       });
       hideLoadingDialog();
       console.log('Albums loaded.');
-      if (typeof cb == 'function') { 
-        cb(data) 
+      if (typeof cb == 'function') {
+        cb(data);
       }
     },
     error: (data) => {
       hideLoadingDialog();
-      handleError('Couldn\'t load albums', data);
-    }
+      handleError("Couldn't load albums", data);
+    },
   });
 }
 
@@ -66,12 +65,17 @@ function initHandsomeTable(albumData) {
 
   let cols = [
     // { type: 'text', data: 'id',  title: 'album ID' },
-    {data: 'number', title: 'Original<br>Order', type: 'numeric', width: 70 },
-    {data: 'mediaItemsCount', title: "Number<br>of Items", type: 'numeric', width: 80},
+    { data: 'number', title: 'Original<br>Order', type: 'numeric', width: 70 },
+    {
+      data: 'mediaItemsCount',
+      title: 'Number<br>of Items',
+      type: 'numeric',
+      width: 80,
+    },
     //{data: 'shared', title: "Shared", width: 60},
     //{data: 'idShort', title: "Album ID<br>(first 12)", width: 110},
     //{data: 'title',  title: "Album Title"},
-    {data: 'titleUrl', title: "Album Title", renderer: "html"},
+    { data: 'titleUrl', title: 'Album Title', renderer: 'html' },
   ];
   const hot = new Handsontable(container, {
     data: albumData,
@@ -89,7 +93,7 @@ function initHandsomeTable(albumData) {
 }
 
 $(document).ready(() => {
-  let albumData = []
+  let albumData = [];
 
   hideError();
   showLoadingDialog();
@@ -105,4 +109,3 @@ $(document).ready(() => {
     $('#total-num-items').text(data.totalMediaItemsCount);
   });
 });
-
