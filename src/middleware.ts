@@ -23,15 +23,14 @@ export default auth((req) => {
   const isAccessingProtectedRoute = PROTECTED_ROUTES.some((route) =>
     pathname.startsWith(route)
   );
-  console.log('middleware auth info', {
+  console.log('middleware auth + req info', {
     pathname: pathname,
     isAuth: isAuth,
     isAccessingApiAuthRoute: isAccessingApiAuthRoute,
     isAccessingAuthRoute: isAccessingAuthRoute,
     isAccessingProtectedRoute: isAccessingProtectedRoute,
+    req: JSON.stringify(req),
   });
-  console.log('middleware req info', JSON.stringify(req));
-  console.log('middleware req.nextUrl info', JSON.stringify(req.nextUrl));
 
   if (isAccessingApiAuthRoute) {
     return NextResponse.next();

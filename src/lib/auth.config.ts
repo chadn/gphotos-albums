@@ -15,6 +15,7 @@ export const authConfig: NextAuthConfig = {
           prompt: 'consent',
           access_type: 'offline',
           response_type: 'code',
+          scope: 'openid profile photoslibrary.readonly',
         },
       },
       /*
