@@ -1,10 +1,11 @@
 // @/middleware.ts
 // https://medium.com/@sazzadur/implementing-google-authentication-in-a-nextjs-14-application-with-authjs-5-mongodb-and-prisma-bbfcb38b3eea
 
-import NextAuth from 'next-auth';
 import { NextResponse } from 'next/server';
+import NextAuth from 'next-auth';
 
 import { authConfig } from '@/lib/auth.config';
+
 import { API_AUTH_PREFIX, AUTH_ROUTES, PROTECTED_ROUTES } from '@/routes';
 
 export const { auth } = NextAuth(authConfig);
@@ -13,7 +14,7 @@ export default auth((req) => {
   const pathname = req.nextUrl.pathname;
 
   // manage route protection
-  const isAuth = req.auth;
+  const isAuth = !!req.auth;
 
   const isAccessingApiAuthRoute = pathname.startsWith(API_AUTH_PREFIX);
   const isAccessingAuthRoute = AUTH_ROUTES.some((route) =>
@@ -30,6 +31,7 @@ export default auth((req) => {
     isAccessingProtectedRoute: isAccessingProtectedRoute,
   });
   console.log('middleware req info', JSON.stringify(req));
+  console.log('middleware req.nextUrl info', JSON.stringify(req.nextUrl));
 
   if (isAccessingApiAuthRoute) {
     return NextResponse.next();
