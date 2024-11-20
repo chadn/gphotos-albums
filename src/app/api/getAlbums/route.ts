@@ -15,10 +15,12 @@ export async function GET(request: NextRequest) {
     // added || '' to quiet ... Type error: Object is possibly 'null'.
     (params.get('useCache') || '').match(/^(0|false)$/) && (useCache = false);
   }
-  useCache && session && console.log('getAlbums'{
-    session: session,
-    token: token,
-  }); // quiet warnings
+  useCache &&
+    console.log('getAlbums', {
+      session: session,
+      token: token,
+    }); // quiet warnings about useCache
+
   // TODO: based on useCache, opt in/out of caching
   // https://nextjs.org/docs/14/app/building-your-application/routing/route-handlers#opting-out-of-caching
 
