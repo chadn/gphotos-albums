@@ -12,13 +12,15 @@ export const authConfig: NextAuthConfig = {
       // returns     "scope": "https://www.googleapis.com/auth/userinfo.profile openid https://www.googleapis.com/auth/userinfo.email",
       // need to add  scope  'https://www.googleapis.com/auth/photoslibrary.readonly',
 
+      //     authorization: "https://gitlab.com/oauth/authorize?scope=read_user",
+
       authorization: {
         params: {
           prompt: 'consent',
           access_type: 'offline',
           response_type: 'code',
           scope:
-            'openid profile https://www.googleapis.com/auth/photoslibrary.readonly',
+            'openid profile email https://www.googleapis.com/auth/photoslibrary.readonly',
         },
       },
       /*

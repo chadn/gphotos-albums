@@ -4,13 +4,16 @@ import { auth } from '@/auth';
 
 async function page() {
   const session = await auth();
+  const token = await auth();
   const user = session?.user;
+  console.log('');
 
   const userInfo = {
     name: user?.name,
     email: user?.email,
     image: user?.image,
     user: JSON.stringify(user),
+    token: JSON.stringify(token),
   };
   const linkStyle = [
     'animated-underline inline-flex items-center font-medium text-primary-500 ',

@@ -22,8 +22,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       );
 
       // add what we need to use to token, token info stored in cookies.
-      token.access_token = account?.access_token ? account.access_token : null;
-      token.given_name = profile?.given_name ? profile.given_name : null;
+      // only assign access_token if not already assigned
+      token.given_name ??= profile?.given_name ? profile.given_name : null;
+      token.access_token ??= account?.access_token
+        ? account.access_token
+        : null;
       console.log('auth.ts jwt returning: token', JSON.stringify(token));
       return token;
     },
