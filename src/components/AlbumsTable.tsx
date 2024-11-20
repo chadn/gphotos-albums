@@ -12,22 +12,20 @@ import '@/styles/handsontable.full.min.css';
 export default function AlbumsDetail() {
   return (
     <>
-      <div className='flex items-center flex-shrink-0 text-white mr-6'>
-        <div id='album-details'>Table HERE</div>
+      <div className='grid grid-cols-1 xl:grid-cols-1 gap-6 px-4'>
+        <p className='w-600 h-0 text-white bg-white'>
+          --------- --------- --------- --------- --------- --------- ---------
+        </p>
+        <div id='album-details' className='w-600'>
+          Click table column header to sort.
+        </div>
       </div>
       <Script
-        //src='/js/jquery.js'
-        src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'
-        integrity='sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=='
-        crossOrigin='anonymous'
-        strategy='beforeInteractive'
+        src='https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js'
         onLoad={() => {
-          console.log('jquery.js has loaded');
+          console.log('handsontable.full.min.js has loaded');
         }}
-        // To load a distributed library, copy and paste the HTML snippet for that library in your web page.
-        // For instance, to load jQuery, embed the snippet in your web page:
       />
-      <Script src='https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js' />
       <Script
         src='/js/common.js'
         strategy='afterInteractive'

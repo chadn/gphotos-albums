@@ -15,15 +15,16 @@ export default function AlbumsPage() {
         <title>Waddup</title>
       </Head>
       <section className='bg-white'>
-        <div className='layout relative flex min-h-screen flex-col items-center py-12 text-center'>
+        <div className='layout relative flex min-h-screen flex-col items-center py-2 text-center'>
           <h2>Album Details</h2>
-          <p className='subhead mdl-color-text--grey-700'>
-            View details of Google Photos albums below. Click column header to
-            sort.
-            <a href='/albumCacheReset'>Force Refresh of Album Data</a>
-          </p>
           <ItemsCount />
           <AlbumsTable />
+          <a
+            href='/albumCacheReset'
+            className='animated-underline inline-flex items-center font-medium text-primary-500  focus-visible:ring-primary-500 focus:outline-none focus-visible:rounded focus-visible:ring focus-visible:ring-offset-2 hover:text-primary-600 active:text-primary-700 disabled:text-primary-200'
+          >
+            Force Refresh of Album Data
+          </a>
         </div>
       </section>
     </main>

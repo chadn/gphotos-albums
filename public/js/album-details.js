@@ -97,10 +97,11 @@ $(document).ready(() => {
   // TODO: Consider switching from HandsomeTable to Material design
   // https://m2.material.io/components/data-tables/web#data-tables
 
-  let hot = initHandsomeTable(albumData);
-  getAlbumData( (data) => {
-    hot.updateData(data.albums);
-    console.log('hot.updateData()', data.albums);
+  window.hot = initHandsomeTable(albumData);
+  getAlbumData((data) => {
+    window.hot.updateData(data.albums);
+    //console.log('hot.updateData()', JSON.stringify(data.albums));
+    //window.hot.render();
     $('#total-num-items').text(data.totalMediaItemsCount);
   });
 });
