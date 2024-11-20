@@ -1,6 +1,61 @@
-// keep the session alive, this will update the session expiry every time its called
-// https://authjs.dev/getting-started/installation?framework=next.js
-export { auth as middleware } from '@/auth';
+// @/middleware.ts
+// https://medium.com/@sazzadur/implementing-google-authentication-in-a-nextjs-14-application-with-authjs-5-mongodb-and-prisma-bbfcb38b3eea
+
+import NextAuth from 'next-auth';
+import { NextResponse } from 'next/server';
+
+import { authConfig } from '@/lib/auth.config';
+import { API_AUTH_PREFIX, AUTH_ROUTES, PROTECTED_ROUTES } from '@/routes';
+
+export const { auth } = NextAuth(authConfig);
+
+export default auth((req) => {
+  const pathname = req.nextUrl.pathname;
+
+  // manage route protection
+  const isAuth = req.auth;
+
+  const isAccessingApiAuthRoute = pathname.startsWith(API_AUTH_PREFIX);
+  const isAccessingAuthRoute = AUTH_ROUTES.some((route) =>
+    pathname.startsWith(route)
+  );
+  const isAccessingProtectedRoute = PROTECTED_ROUTES.some((route) =>
+    pathname.startsWith(route)
+  );
+  console.log('middleware auth info', {
+    pathname: pathname,
+    isAuth: isAuth,
+    isAccessingApiAuthRoute: isAccessingApiAuthRoute,
+    isAccessingAuthRoute: isAccessingAuthRoute,
+    isAccessingProtectedRoute: isAccessingProtectedRoute,
+  });
+  console.log('middleware req info', JSON.stringify(req));
+
+  if (isAccessingApiAuthRoute) {
+    return NextResponse.next();
+  }
+
+  if (isAccessingAuthRoute) {
+    if (isAuth) {
+      return NextResponse.redirect(new URL('/', req.url));
+    }
+
+    return NextResponse.next();
+  }
+
+  if (!isAuth && isAccessingProtectedRoute) {
+    console.log(
+      `middleware redirecting to /login cuz not auth'd for: "${pathname}"`
+    );
+    return NextResponse.redirect(new URL('/login', req.url));
+  }
+});
+
+export const config = {
+  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+};
+
+//import { auth } from '@/auth';
 
 // import type { NextRequest } from 'next/server';
 // import { NextResponse } from 'next/server';
@@ -36,17 +91,28 @@ console.log('middleware greetings, yo. matcher: /my-account');
 // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
 // This means that middleware will not run on requests that match below.
 // tested: server logs only have console.log above on /my-account when user has logged in.
+/*
+ * Match all request paths except for the ones starting with:
+ * - api (API routes)
+ * - _next/static (static files)
+ * - _next/image (image optimization files)
+ * - favicon.ico, sitemap.xml, robots.txt (metadata files)
+ * '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+ *
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
-     */
     '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
     '/my-account',
     //'/components',
   ],
 };
+*/
+// chad testing https://authjs.dev/getting-started/session-management/protecting
+// export default auth((req) => {
+//   console.log(`middleware.ts:req.auth: ${JSON.stringify(req.auth)}`);
+//   if (!req.auth && req.nextUrl.pathname !== '/') {
+//     console.log('middleware.ts:redirect to /login');
+//     const newUrl = new URL('/login', req.nextUrl.origin);
+//     return Response.redirect(newUrl);
+//   }
+// });

@@ -14,7 +14,8 @@ export async function GET(request: NextRequest) {
     // added || '' to quiet ... Type error: Object is possibly 'null'.
     (params.get('useCache') || '').match(/^(0|false)$/) && (useCache = false);
   }
-  // TODO: based on useCaceh, opt in/out of caching
+  useCache && console.log('useCache'); // quiet warnings
+  // TODO: based on useCache, opt in/out of caching
   // https://nextjs.org/docs/14/app/building-your-application/routing/route-handlers#opting-out-of-caching
 
   //const data = await libraryApiGetAlbums(session.user.token);
