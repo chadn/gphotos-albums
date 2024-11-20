@@ -1,4 +1,9 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+# skip running this by using --no-verify, example:
+# git commit -m "skipping hooks" --no-verify
+
 npx lint-staged
+pnpm test
+pnpm build

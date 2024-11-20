@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Script from 'next/script';
 import * as React from 'react';
 
 import '@/styles/globals.css';
@@ -58,6 +59,12 @@ export default async function RootLayout({
   return (
     <html>
       <body>
+        <Script
+          src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'
+          integrity='sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=='
+          crossOrigin='anonymous'
+          strategy='beforeInteractive'
+        />
         <NavBar />
         <div>{children}</div>
       </body>

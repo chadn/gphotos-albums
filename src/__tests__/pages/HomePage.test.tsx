@@ -1,8 +1,6 @@
-// !STARTERCONF You should delete this page
-
 import { render, screen } from '@testing-library/react';
 
-import HomePage from '@/app/page';
+import HomePage from '@/app/homepage/page';
 
 describe('Homepage', () => {
   it('renders the Components', () => {
