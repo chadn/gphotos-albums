@@ -7,6 +7,7 @@ import { auth } from '@/auth';
 export async function GET(request: NextRequest) {
   const session = await auth();
   const token = await auth();
+  const jwt = await auth();
   if (!session?.user) return NextResponse.json({});
 
   let useCache = true;
@@ -19,6 +20,7 @@ export async function GET(request: NextRequest) {
     console.log('getAlbums', {
       session: session,
       token: token,
+      jwt: jwt,
     }); // quiet warnings about useCache
 
   // TODO: based on useCache, opt in/out of caching
