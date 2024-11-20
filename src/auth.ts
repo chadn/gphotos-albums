@@ -1,10 +1,11 @@
 // @/auth.ts
 
 import NextAuth from 'next-auth';
+import type { NextAuthConfig } from 'next-auth';
 
 import { authConfig } from '@/lib/auth.config';
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const config = {
   ...authConfig,
   debug: !!process.env.AUTH_DEBUG,
   trustHost: true,
@@ -37,16 +38,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (token) {
         // set the token data to session
+        //
+        // below doesn't work, cannot build, gives this error
+        // Property 'access_token' does not exist on type 'AdapterUser & User'.
+        //
+        //session.user.access_token ??= token?.access_token || null;
+        //session.user.given_name ??= token?.given_name || null;
       }
       console.log(
-        'auth.ts session cb',
+        'auth.ts session',
         JSON.stringify({
           token: token,
           session: session,
         })
       );
-
       return session;
     },
   },
-});
+} satisfies NextAuthConfig;
+
+export const { handlers, signIn, signOut, auth } = NextAuth(config);
