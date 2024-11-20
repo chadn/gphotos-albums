@@ -4,6 +4,8 @@ import { NextAuthConfig } from 'next-auth';
 import Google from 'next-auth/providers/google';
 
 // more at https://authjs.dev/getting-started/providers/google
+// object defined by this in the following file: export interface AuthConfig
+// https://github.com/nextauthjs/next-auth/blob/main/packages/core/src/index.ts
 export const authConfig: NextAuthConfig = {
   providers: [
     Google({
@@ -15,7 +17,8 @@ export const authConfig: NextAuthConfig = {
           prompt: 'consent',
           access_type: 'offline',
           response_type: 'code',
-          scope: 'openid profile photoslibrary.readonly',
+          scope:
+            'openid profile https://www.googleapis.com/auth/photoslibrary.readonly',
         },
       },
       /*
