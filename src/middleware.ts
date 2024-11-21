@@ -23,7 +23,7 @@ export default auth((req) => {
   const isAccessingProtectedRoute = PROTECTED_ROUTES.some((route) =>
     pathname.startsWith(route)
   );
-  console.log('middleware auth req', {
+  console.debug('middleware auth req', {
     pathname: pathname,
     isAuth: isAuth,
     isAccessingApiAuthRoute: isAccessingApiAuthRoute,
@@ -56,38 +56,6 @@ export const config = {
   matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
 };
 
-//import { auth } from '@/auth';
-
-// import type { NextRequest } from 'next/server';
-// import { NextResponse } from 'next/server';
-
-// This function can be marked `async` if using `await` inside
-// export function middleware(request: NextRequest) {
-//   console.log(`middleware orig pathname: "${request.nextUrl.pathname}"`);
-//   if (request.nextUrl.pathname.startsWith('/m')) {
-//     console.log(`middleware rewriting pathname`);
-//     return NextResponse.rewrite(new URL('/my_account', request.url))
-//   }
-//   if (request.nextUrl.pathname == '/') {
-//     if (isAuthenticated(request)) {
-//       console.log(`middleware isAuthenticated, going to /my_account`);
-//       return NextResponse.rewrite(new URL('/my_account', request.url));
-//     } else {
-//       console.log(`middleware NOT isAuthenticated, going to /login`);
-//       return NextResponse.rewrite(new URL('/login', request.url));
-//     }
-//   } else {
-//     return NextResponse;
-//   }
-// }
-
-console.log('middleware greetings, yo. matcher: /my-account');
-
-// Or like this if you need to do something here.
-// export default auth((req) => {
-//   console.log(req.auth) //  { session: { user: { ... } } }
-// })
-
 // "matcher allows you to filter Middleware to run on specific paths."
 // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
 // This means that middleware will not run on requests that match below.
@@ -108,12 +76,3 @@ export const config = {
   ],
 };
 */
-// chad testing https://authjs.dev/getting-started/session-management/protecting
-// export default auth((req) => {
-//   console.log(`middleware.ts:req.auth: ${JSON.stringify(req.auth)}`);
-//   if (!req.auth && req.nextUrl.pathname !== '/') {
-//     console.log('middleware.ts:redirect to /login');
-//     const newUrl = new URL('/login', req.nextUrl.origin);
-//     return Response.redirect(newUrl);
-//   }
-// });

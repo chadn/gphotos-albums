@@ -6,7 +6,10 @@ import NextAuth, { type NextAuthConfig } from 'next-auth';
 import { authConfig } from '@/lib/auth.config';
 
 //import type { AdapterUser } from 'next-auth/core/adapters';
-
+// Below module augmentation did not work for me, still had typescript errors with access_token
+// TODO: resolve after next-auth 5 is out of beta
+// similar fixed: https://github.com/nextauthjs/next-auth/issues/9253#issuecomment-2314104438
+//
 // https://authjs.dev/getting-started/typescript#module-augmentation
 // declare module 'next-auth' {
 //   /**
@@ -33,55 +36,38 @@ export const config = {
   debug: !!process.env.AUTH_DEBUG,
   trustHost: true,
   callbacks: {
-    async jwt({ token, user, account, profile }) {
-      // the following is also logged if AUTH_DEBUG is true
-      console.log(
-        'auth.ts jwt cb',
-        JSON.stringify({
-          token: token,
-          user: user,
-          account: account,
-          profile: profile,
-        })
-      );
+    async jwt({ token, account, profile }) {
       // add what we need to use to token, token info stored in cookies.
-      // only assign access_token if not already assigned - this cb gets called lots.
       // https://authjs.dev/guides/extending-the-session
       token.given_name ??= profile?.given_name ? profile.given_name : null;
       if (token && account?.access_token) {
         token.access_token ??= account.access_token;
       }
-      console.log('auth.ts jwt returning: token', JSON.stringify(token));
+      console.debug('auth.ts jwt returning: token', JSON.stringify(token));
       return token;
     },
-    session({ session, token, user }) {
+    session({ session, token }) {
       if (session.user && token.given_name) {
         // TODO: figure out how to fix: Type error: Type '{}' is not assignable to type 'string'.
+        // TODO: resolve after next-auth 5 is out of beta
         // @ts-expect-error: Should be assignable
         session.user.given_name = token.given_name;
       }
       if (session.user && token.access_token) {
         // TODO: figure out how to fix: Type error: Type '{}' is not assignable to type 'string'.
+        // TODO: resolve after next-auth 5 is out of beta
+        // similar fixed: https://github.com/nextauthjs/next-auth/issues/9253#issuecomment-2314104438
         // @ts-expect-error: Should be assignable
         session.user.access_token = token.access_token;
       }
-      console.log(
+      console.debug(
         'auth.ts session',
         JSON.stringify({
           token: token,
-          user: user,
           session: session,
         })
       );
-      // `session.user.given_name` is now a valid property, and will be type-checked
-      // in places like `useSession().data.user` or `auth().user`
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          //given_name: user.given_name,
-        },
-      };
+      return session;
     },
   },
 } satisfies NextAuthConfig;

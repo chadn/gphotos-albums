@@ -6,10 +6,11 @@ import { auth } from '@/auth';
 
 export async function GET(request: NextRequest) {
   const session = await auth();
-  const token = await auth();
-  const jwt = await auth();
-  const account = await auth();
   if (!session?.user) return NextResponse.json({});
+
+  // TODO: figure out how to fix after 5 beta: Property 'access_token' does not exist on type 'User'.
+  // @ts-expect-error: session.user.access_token created in session cb, see auth.ts
+  const access_token = session.user.access_token;
 
   let useCache = true;
   const params = request.nextUrl.searchParams;
@@ -19,10 +20,8 @@ export async function GET(request: NextRequest) {
   }
   useCache &&
     console.log('getAlbums', {
+      access_token: access_token,
       session: session,
-      token: token,
-      jwt: jwt,
-      account: account,
     }); // quiet warnings about useCache
 
   // TODO: based on useCache, opt in/out of caching
