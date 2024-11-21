@@ -64,6 +64,16 @@ export const config = {
         //session.user.access_token ??= token?.access_token || null;
         //session.user.given_name ??= token?.given_name || null;
       }
+      if (session.user && token.given_name) {
+        // TODO: figure out how to fix this
+        // @ts-expect-error: Should be assignable
+        session.user.given_name = token.given_name;
+      }
+      if (session.user && token.access_token) {
+        // TODO: figure out how to fix this
+        // @ts-expect-error: Should be assignable
+        session.user.access_token = token.access_token;
+      }
       console.log(
         'auth.ts session',
         JSON.stringify({
