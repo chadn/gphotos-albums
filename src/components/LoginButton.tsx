@@ -12,7 +12,7 @@ export default function LoginButton() {
         type='submit'
         onClick={() =>
           signIn('google', {
-            callbackUrl: '/my-account',
+            callbackUrl: '/albums',
           })
         }
       >
