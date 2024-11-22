@@ -93,6 +93,7 @@ function initHandsomeTable(albumData) {
 }
 
 $(document).ready(() => {
+  console.log('jquery document ready');
   let albumData = [
     {
       id: 'fakeId',
@@ -112,6 +113,9 @@ $(document).ready(() => {
 
   window.hot = initHandsomeTable(albumData);
   getAlbumData((data) => {
+    console.log(
+      `getAlbumData() returned ${data.totalMediaItemsCount} total items.`
+    );
     window.hot.updateData(data.albums);
     //console.log('hot.updateData()', JSON.stringify(data.albums));
     //window.hot.render();
