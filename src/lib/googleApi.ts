@@ -55,7 +55,7 @@ export async function libraryApiGetAlbums(
         }
       );
       if (!response.ok) {
-        console.debug('libraryApiGetAlbums - fetch not ok');
+        console.debug('libraryApiGetAlbums - fetch not ok', response);
         // Throw a StatusError if a non-OK HTTP status was returned.
         let message = '';
         try {
