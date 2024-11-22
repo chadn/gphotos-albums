@@ -1,4 +1,5 @@
-// import * as React from 'react';
+'use client'
+
 // https://nextjs.org/docs/pages/building-your-application/optimizing/scripts
 import Script from 'next/script';
 import React from 'react';
@@ -7,7 +8,6 @@ import React from 'react';
 import '@/styles/handsontable.full.min.css';
 
 // import { cn } from '@/lib/utils';
-// import { auth, signOut } from '@/auth';
 
 export default function AlbumsDetail() {
   return (
@@ -23,7 +23,7 @@ export default function AlbumsDetail() {
       <Script
         src='https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js'
         onLoad={() => {
-          window.handsontableJsLoaded = true;
+          window && window.handsontableJsLoaded = true;
           console.log('handsontable.full.min.js has loaded');
         }}
       />
