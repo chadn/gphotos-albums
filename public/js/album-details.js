@@ -93,7 +93,16 @@ function initHandsomeTable(albumData) {
 }
 
 $(document).ready(() => {
-  let albumData = [];
+  let albumData = [
+    {
+      id: 'fakeId',
+      title: 'FETCHING ALBUMS .... (takes 5-20 seconds) ',
+      productUrl: '',
+      mediaItemsCount: '0',
+      coverPhotoBaseUrl: '',
+      coverPhotoMediaItemId: '',
+    },
+  ];
 
   hideError();
   showLoadingDialog();

@@ -36,7 +36,6 @@ export async function libraryApiGetAlbums(
   };
   const parameters = new URLSearchParams();
   parameters.append('pageSize', apiConfig.albumPageSize);
-  //parameters.append('access_token', access_token);
   console.debug(
     `Using API cmd: ${apiConfig.apiEndpoint}/v1/albums?${parameters}`
   );
@@ -60,7 +59,8 @@ export async function libraryApiGetAlbums(
       );
       if (!response.ok) {
         const result = await response.json();
-        console.debug('libraryApiGetAlbums - fetch not ok', {
+        console.warn('libraryApiGetAlbums - fetch not ok.');
+        console.debug('libraryApiGetAlbums - fetch not ok:', {
           responseJson: result,
           response: response,
         });
