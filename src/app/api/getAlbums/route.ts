@@ -8,21 +8,22 @@ export async function GET(request: NextRequest) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({});
 
-  // TODO: figure out how to fix after 5 beta: Property 'access_token' does not exist on type 'User'.
+  // TODO: figure out how to fix this type error after next-auth version 5.0 gets out of beta
+  // Property 'access_token' does not exist on type 'User'.
   // @ts-expect-error: session.user.access_token created in session cb, see auth.ts
   const access_token = session.user.access_token;
 
   let useCache = true;
   const params = request.nextUrl.searchParams;
   if (params.has('useCache')) {
-    // added || '' to quiet ... Type error: Object is possibly 'null'.
+    // added || '' to quiet Type error: Object is possibly 'null'.
     (params.get('useCache') || '').match(/^(0|false)$/) && (useCache = false);
   }
-  useCache &&
-    console.log('getAlbums', {
-      access_token: access_token,
-      session: session,
-    }); // quiet warnings about useCache
+  console.log('getAlbums', {
+    access_token: access_token,
+    useCache: useCache,
+    session: session,
+  });
 
   // TODO: based on useCache, opt in/out of caching
   // https://nextjs.org/docs/14/app/building-your-application/routing/route-handlers#opting-out-of-caching

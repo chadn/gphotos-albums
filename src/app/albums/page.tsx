@@ -20,7 +20,7 @@ export default function AlbumsPage() {
           <ItemsCount />
           <AlbumsTable />
           {/*
-             * make this work after figuring out useCache in /api/getAlbums
+             * make /albumCacheReset work after figuring out useCache in /api/getAlbums
           <a 
             href='/albumCacheReset'
             className='animated-underline inline-flex items-center font-medium text-primary-500  focus-visible:ring-primary-500 focus:outline-none focus-visible:rounded focus-visible:ring focus-visible:ring-offset-2 hover:text-primary-600 active:text-primary-700 disabled:text-primary-200'

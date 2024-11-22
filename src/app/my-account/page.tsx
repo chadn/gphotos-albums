@@ -4,16 +4,16 @@ import { auth } from '@/auth';
 
 async function page() {
   const session = await auth();
-  const token = await auth();
   const user = session?.user;
-  console.log('');
 
   const userInfo = {
+    // TODO: figure out how to fix: Property 'given_name' does not exist on type 'User'.
+    // TODO: resolve after next-auth 5 is out of beta
+    // @ts-expect-error: Property 'given_name' should exist on type 'User'.
+    given_name: user?.given_name,
     name: user?.name,
     email: user?.email,
     image: user?.image,
-    user: JSON.stringify(user),
-    token: JSON.stringify(token),
   };
   const linkStyle = [
     'animated-underline inline-flex items-center font-medium text-primary-500 ',

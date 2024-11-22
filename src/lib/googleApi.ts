@@ -1,10 +1,3 @@
-const apiConfig = {
-  // The page size to use for the listing albums request. 50 is reccommended.
-  albumPageSize: '100',
-  // The API end point to use. Do not change.
-  apiEndpoint: 'https://photoslibrary.googleapis.com',
-};
-
 interface AlbumData {
   id: string;
   title: string;
@@ -17,86 +10,6 @@ interface AlbumData {
 interface GetAlbumsReturn {
   albums: AlbumData[];
   error: string;
-}
-
-/*
- * @description Calls the Google Photos API to get all albums
- * @param {string} authToken - token supplied by Google to use API
- * @returns {GetAlbumsReturn}
- */
-export async function libraryApiGetAlbums(
-  authToken: string
-): Promise<GetAlbumsReturn> {
-  const ret: GetAlbumsReturn = {
-    albums: [],
-    error: '',
-  };
-  const parameters = new URLSearchParams();
-  parameters.append('pageSize', apiConfig.albumPageSize);
-  console.log('Using API cmd: /v1/albums?' + parameters);
-
-  try {
-    // Loop while there is a nextpageToken property in the response until all
-    // albums have been listed.
-    do {
-      console.log(`Loading albums. Received so far: ${ret.albums.length}`);
-      // Make a GET request to load the albums with optional parameters (the
-      // pageToken if set).
-      const response = await fetch(
-        apiConfig.apiEndpoint + '/v1/albums?' + parameters,
-        {
-          method: 'get',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + authToken,
-          },
-        }
-      );
-      if (!response.ok) {
-        console.debug('libraryApiGetAlbums - fetch not ok');
-        // Throw a StatusError if a non-OK HTTP status was returned.
-        let message = '';
-        try {
-          // Try to parse the response body as JSON, in case the server returned a useful response.
-          message = await response.json();
-        } catch (err) {
-          // Ignore if no JSON payload was retrieved and use the status text instead.
-        }
-        throw new Error(`${response.status} ${response.statusText} ${message}`);
-      }
-      console.debug('libraryApiGetAlbums - fetch ok');
-
-      const result = await response.json();
-
-      console.debug(`Response: ${result}`);
-
-      if (result && result.albums) {
-        console.log(`Number of albums received: ${result.albums.length}`);
-        // Parse albums and add them to the list, skipping empty entries.
-        const items = result.albums.filter((x: AlbumData) => !!x);
-
-        ret.albums = ret.albums.concat(items);
-      }
-      if (result.nextPageToken) {
-        parameters.set('pageToken', result.nextPageToken);
-      } else {
-        parameters.delete('pageToken');
-      }
-
-      // Loop until all albums have been listed and no new nextPageToken is
-      // returned.
-    } while (parameters.has('pageToken'));
-  } catch (err) {
-    // Log the error and prepare to return it.
-    ret.error = JSON.stringify(err);
-    console.error(JSON.stringify({ 'libraryApiGetAlbums Error': err }));
-  }
-
-  console.debug(
-    JSON.stringify({ 'API response of first album': ret.albums[0] })
-  );
-  console.log('Albums loaded.');
-  return ret;
 }
 
 /*
