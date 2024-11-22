@@ -119,10 +119,14 @@ $(document).ready(async () => {
       `getAlbumData() returned ${data.totalMediaItemsCount} total items.`
     );
     if (data.error) {
-      albumData.titleUrl = 'Error - Try logout/login again';
+      albumData[0].titleUrl = 'Error - Try logout/login again';
       window.hot.updateData(albumData);
+      console.log('getAlbumData() returned error: ', data.error);
     } else {
       window.hot.updateData(data.albums);
+      console.log(
+        `getAlbumData() returned ${data.totalMediaItemsCount} total items.`
+      );
     }
     //console.log('hot.updateData()', JSON.stringify(data.albums));
     //window.hot.render();
