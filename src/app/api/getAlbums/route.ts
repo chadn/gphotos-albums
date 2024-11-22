@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
-import { getFakeAlbumsData } from '@/lib/googleApi';
+import { libraryApiGetAlbums } from '@/lib/googleApi';
 
 import { auth } from '@/auth';
 
@@ -28,8 +28,9 @@ export async function GET(request: NextRequest) {
   // TODO: based on useCache, opt in/out of caching
   // https://nextjs.org/docs/14/app/building-your-application/routing/route-handlers#opting-out-of-caching
 
-  //const data = await libraryApiGetAlbums(session.user.token);
-  const data = getFakeAlbumsData();
+  // if testing, use const data = getFakeAlbumsData();
+
+  const data = await libraryApiGetAlbums(access_token);
   if (data.error) {
     // Error occured during the request. Albums could not be loaded.
     return NextResponse.json({
