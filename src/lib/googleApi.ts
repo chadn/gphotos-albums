@@ -1,8 +1,9 @@
 // @/lib/googleApi
 
 const apiConfig = {
-  // The page size to use for the listing albums request. 50 is reccommended.
-  albumPageSize: '100',
+  // The page size to use for the listing albums request. 50 is max, according to
+  // https://photoslibrary.googleapis.com/$discovery/rest?version=v1
+  albumPageSize: '50',
   // The API end point to use. Do not change.
   apiEndpoint: 'https://photoslibrary.googleapis.com',
 };
@@ -35,7 +36,10 @@ export async function libraryApiGetAlbums(
   };
   const parameters = new URLSearchParams();
   parameters.append('pageSize', apiConfig.albumPageSize);
-  console.debug('Using API cmd: /v1/albums?' + parameters);
+  parameters.append('access_token', access_token);
+  console.debug(
+    `Using API cmd: ${apiConfig.apiEndpoint}/v1/albums?${parameters}`
+  );
 
   try {
     // Loop while there is a nextpageToken property in the response until all
@@ -55,7 +59,11 @@ export async function libraryApiGetAlbums(
         }
       );
       if (!response.ok) {
-        console.debug('libraryApiGetAlbums - fetch not ok', response);
+        const result = await response.json();
+        console.debug('libraryApiGetAlbums - fetch not ok', {
+          responseJson: result,
+          response: response,
+        });
         // Throw a StatusError if a non-OK HTTP status was returned.
         let message = '';
         try {
