@@ -81,3 +81,6 @@ Summary of differences between versions
 | next.js          |                                                                            | ✅                                                         | ✅    |
 | typescript       |                                                                            | ✅                                                         | ✅    |
 | authjs for auth  |                                                                            | ✅                                                         | ✅    |
+
+Note authjs is still in beta and some hacks are currently in the code, to be revisited after it is out of beta.
+Also note photos API is changing in 2025. Version 2.0 will address these issues.

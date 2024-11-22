@@ -118,7 +118,12 @@ $(document).ready(async () => {
     console.log(
       `getAlbumData() returned ${data.totalMediaItemsCount} total items.`
     );
-    window.hot.updateData(data.albums);
+    if (data.error) {
+      albumData.titleUrl = 'Error - Try logout/login again';
+      window.hot.updateData(albumData);
+    } else {
+      window.hot.updateData(data.albums);
+    }
     //console.log('hot.updateData()', JSON.stringify(data.albums));
     //window.hot.render();
     $('#total-num-items').text(data.totalMediaItemsCount);
