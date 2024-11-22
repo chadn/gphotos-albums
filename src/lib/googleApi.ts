@@ -36,7 +36,7 @@ export async function libraryApiGetAlbums(
   };
   const parameters = new URLSearchParams();
   parameters.append('pageSize', apiConfig.albumPageSize);
-  parameters.append('access_token', access_token);
+  //parameters.append('access_token', access_token);
   console.debug(
     `Using API cmd: ${apiConfig.apiEndpoint}/v1/albums?${parameters}`
   );
@@ -74,14 +74,14 @@ export async function libraryApiGetAlbums(
         }
         throw new Error(`${response.status} ${response.statusText} ${message}`);
       }
-      console.debug('libraryApiGetAlbums - fetch ok');
+      //console.debug('libraryApiGetAlbums - fetch ok');
 
       const result = await response.json();
 
-      console.debug(`Response: ${result}`);
+      //console.debug('Response', result);
 
       if (result && result.albums) {
-        console.log(`Number of albums received: ${result.albums.length}`);
+        //console.log(`Number of albums received: ${result.albums.length}`);
         // Parse albums and add them to the list, skipping empty entries.
         const items = result.albums.filter((x: AlbumData) => !!x);
 
