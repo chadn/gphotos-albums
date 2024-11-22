@@ -30,7 +30,7 @@ function getAlbumData(cb) {
     url: '/api/getAlbums',
     dataType: 'json',
     success: (data) => {
-      console.log('Loaded albums: ' + data.albums);
+      //console.log('Loaded albums: ' + data.albums);
       data.totalMediaItemsCount = 0;
       data.sharedAlbums = false;
       $.each(data.albums, (i, item) => {
@@ -96,12 +96,9 @@ $(document).ready(() => {
   console.log('jquery document ready');
   let albumData = [
     {
-      id: 'fakeId',
-      title: 'FETCHING ALBUMS .... (takes 5-20 seconds) ',
-      productUrl: '',
+      number: 0,
+      titleUrl: 'FETCHING ALBUMS .... (takes 5-20 seconds)',
       mediaItemsCount: '0',
-      coverPhotoBaseUrl: '',
-      coverPhotoMediaItemId: '',
     },
   ];
 
