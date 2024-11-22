@@ -92,8 +92,13 @@ function initHandsomeTable(albumData) {
   return hot;
 }
 
-$(document).ready(() => {
-  console.log('jquery document ready');
+$(document).ready(async () => {
+  if (window.handsontableJsLoaded) {
+    console.log('jquery document ready, handsontableJsLoaded');
+  } else {
+    console.log('jquery document ready, waiting on handsontableJsLoaded');
+    await sleep(500); // Wait for 0.5 seconds
+  }
   let albumData = [
     {
       number: 0,

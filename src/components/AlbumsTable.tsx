@@ -23,6 +23,7 @@ export default function AlbumsDetail() {
       <Script
         src='https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js'
         onLoad={() => {
+          window.handsontableJsLoaded = true;
           console.log('handsontable.full.min.js has loaded');
         }}
       />
@@ -35,7 +36,7 @@ export default function AlbumsDetail() {
       />
       <Script
         src='/js/album-details.js'
-        strategy='afterInteractive'
+        strategy='lazyOnload'
         onLoad={() => {
           console.log('album-details.js has loaded');
         }}
