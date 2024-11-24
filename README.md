@@ -1,6 +1,7 @@
 # GPhotos Albums
 
-View a list of all your Google Photos Albums, and sort by name, number of items in each, or the default sort (which is usually most recently updated first but google will not confirm)
+View a list of all your Google Photos Albums all in one place.
+Sort by name, number of items in each, or the default sort (which is usually most recently updated first but google will not confirm)
 
 ## Overview
 
@@ -59,6 +60,7 @@ Goals of the Project
 - Demonstrate my coding skills
   - Making this available on github.com
   - Full stack skills demonstrated - see tech stack in [Overview](#overview) above
+  - Focus on using the latest most popular Full stack and FED tech.
 - Demonstrate how a project can migrate in stages to React.js framework
   - React.js is a powerful library and can be daunting. In my case, I wanted to show how a project can be ported to React + Next.js in stages by preserving the javascript files that did much of the heavy lifting in my original express.js. So I planned for version 1.5 that had a bit of the old code working with new code, see [versions](#versions) below.
 
@@ -67,16 +69,18 @@ https://chadnorwood.com/2024/04/11/google-photos-api-and-flickr/
 
 ### Versions
 
-Summary of differences between versions
+Summary of differences between versions.
 
 | Tech             | [v 1.0](https://github.com/chadn/gphotos-albums/tree/final-express.js-ejs) | [v 1.5](https://github.com/chadn/gphotos-albums/tree/v1.5) | v 2.0 |
 | ---------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------- | ----- |
 | node.js          | ✅                                                                         | ✅                                                         | ✅    |
+| npm              | ✅                                                                         |                                                            |       |
 | express.js       | ✅                                                                         |                                                            |       |
 | passport auth    | ✅                                                                         |                                                            |       |
 | handsontable.js  | ✅                                                                         | ✅                                                         |       |
 | jquery.js        | ✅                                                                         | ✅                                                         |       |
 | album-details.js | ✅                                                                         | ✅                                                         |       |
+| pnpm             |                                                                            | ✅                                                         | ✅    |
 | react            |                                                                            | ✅                                                         | ✅    |
 | next.js          |                                                                            | ✅                                                         | ✅    |
 | typescript       |                                                                            | ✅                                                         | ✅    |
