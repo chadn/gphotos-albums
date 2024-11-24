@@ -69,22 +69,25 @@ https://chadnorwood.com/2024/04/11/google-photos-api-and-flickr/
 
 ### Versions
 
-Summary of differences between versions.
+Summary of differences between versions. See [CHANGELOG.md](CHANGELOG.md) for details.
 
-| Tech             | [v 1.0](https://github.com/chadn/gphotos-albums/tree/final-express.js-ejs) | [v 1.5](https://github.com/chadn/gphotos-albums/tree/v1.5) | v 2.0 |
-| ---------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------- | ----- |
-| node.js          | ✅                                                                         | ✅                                                         | ✅    |
-| npm              | ✅                                                                         |                                                            |       |
-| express.js       | ✅                                                                         |                                                            |       |
-| passport auth    | ✅                                                                         |                                                            |       |
-| handsontable.js  | ✅                                                                         | ✅                                                         |       |
-| jquery.js        | ✅                                                                         | ✅                                                         |       |
-| album-details.js | ✅                                                                         | ✅                                                         |       |
-| pnpm             |                                                                            | ✅                                                         | ✅    |
-| react            |                                                                            | ✅                                                         | ✅    |
-| next.js          |                                                                            | ✅                                                         | ✅    |
-| typescript       |                                                                            | ✅                                                         | ✅    |
-| authjs for auth  |                                                                            | ✅                                                         | ✅    |
+| Tech                                                                                                 | [v 1.0](https://github.com/chadn/gphotos-albums/tree/final-express.js-ejs) | [v 1.5](https://github.com/chadn/gphotos-albums/tree/v1.5) | v 2.0 |
+| ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------- | ----- |
+| node.js                                                                                              | ✅                                                                         | ✅                                                         | ✅    |
+| npm                                                                                                  | ✅                                                                         |                                                            |       |
+| express.js                                                                                           | ✅                                                                         |                                                            |       |
+| passport auth                                                                                        | ✅                                                                         |                                                            |       |
+| handsontable.js                                                                                      | ✅                                                                         | ✅                                                         |       |
+| jquery.js                                                                                            | ✅                                                                         | ✅                                                         |       |
+| album-details.js                                                                                     | ✅                                                                         | ✅                                                         |       |
+| pnpm                                                                                                 |                                                                            | ✅                                                         | ✅    |
+| react                                                                                                |                                                                            | ✅                                                         | ✅    |
+| next.js                                                                                              |                                                                            | ✅                                                         | ✅    |
+| typescript                                                                                           |                                                                            | ✅                                                         | ✅    |
+| authjs 5 beta                                                                                        |                                                                            | ✅                                                         |       |
+| authjs 5 release                                                                                     |                                                                            |                                                            | ✅    |
+| [Google Photos Library API](https://developers.google.com/photos/library/guides/get-started-library) | ✅                                                                         | ✅                                                         |       |
+| [Google Photos Picker API](https://developers.google.com/photos/picker/guides/media-items)           |                                                                            |                                                            | ✅    |
 
 Note authjs is still in beta and some hacks are currently in the code, to be revisited after it is out of beta.
 Also note photos API is changing in 2025. Version 2.0 will address these issues.
