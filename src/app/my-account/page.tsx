@@ -31,8 +31,13 @@ async function page() {
           className={`${linkStyle}`}
         >
           github.com/chadn/gphotos-albums
+        </a>{' '}
+        and maybe you can{' '}
+        <a href='/_src' className={`${linkStyle}`}>
+          browse the source code for this production release
         </a>
       </p>
+      <p> </p>
       <p>
         Also see{' '}
         <a href='/components' className={`${linkStyle}`}>
