@@ -18,6 +18,7 @@ interface AlbumData {
 }
 
 interface GetAlbumsReturn {
+  statusCode: number;
   albums: AlbumData[];
   error: string;
 }
@@ -31,6 +32,7 @@ export async function libraryApiGetAlbums(
   access_token: string
 ): Promise<GetAlbumsReturn> {
   const ret: GetAlbumsReturn = {
+    statusCode: 0,
     albums: [],
     error: '',
   };
@@ -57,6 +59,7 @@ export async function libraryApiGetAlbums(
           },
         }
       );
+      ret.statusCode = response.status;
       if (!response.ok) {
         const result = await response.json();
         console.warn('libraryApiGetAlbums - fetch not ok.');
@@ -115,6 +118,7 @@ export async function libraryApiGetAlbums(
  */
 export function getFakeAlbumsData(): GetAlbumsReturn {
   return {
+    statusCode: 200,
     albums: [
       {
         id: 'AC7OsWZSvKmd_BPEjRBdfHJ5K0MM4UdIqGjVgYLomvo7p7_ztWqDiMy4tSZuspFnS7z2E33Ny69t',

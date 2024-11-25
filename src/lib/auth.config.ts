@@ -38,6 +38,9 @@ export const authConfig: NextAuthConfig = {
       if (token && account?.access_token) {
         token.access_token ??= account.access_token;
       }
+      if (token && account?.refresh_token) {
+        token.refresh_token ??= account.refresh_token;
+      }
       console.debug('auth.ts jwt returning: token', JSON.stringify(token));
       return token;
     },
@@ -54,6 +57,13 @@ export const authConfig: NextAuthConfig = {
         // similar fixed: https://github.com/nextauthjs/next-auth/issues/9253#issuecomment-2314104438
         // @ts-expect-error: Should be assignable
         session.user.access_token = token.access_token;
+      }
+      if (session.user && token.refresh_token) {
+        // TODO: figure out how to fix: Property 'refresh_token' does not exist on type 'AdapterUser & User'
+        // TODO: resolve after next-auth 5 is out of beta
+        // similar fixed: https://github.com/nextauthjs/next-auth/issues/9253#issuecomment-2314104438
+        // @ts-expect-error: Should be assignable
+        session.user.refresh_token = token.refresh_token;
       }
       console.debug(
         'auth.ts session',

@@ -12,6 +12,8 @@ export async function GET(request: NextRequest) {
   // Property 'access_token' does not exist on type 'User'.
   // @ts-expect-error: session.user.access_token created in session cb, see auth.ts
   const access_token = session.user.access_token;
+  // @ts-expect-error: session.user.refresh_token created in session cb, see auth.ts
+  const refresh_token = session.user.refresh_token;
 
   let useCache = true;
   const params = request.nextUrl.searchParams;
@@ -21,6 +23,7 @@ export async function GET(request: NextRequest) {
   }
   console.log('getAlbums', {
     access_token: access_token,
+    refresh_token: refresh_token,
     useCache: useCache,
     session: session,
   });
@@ -31,8 +34,12 @@ export async function GET(request: NextRequest) {
   // if testing, use const data = getFakeAlbumsData();
 
   const data = await libraryApiGetAlbums(access_token);
+  if (401 == data.statusCode) {
+    console.log('getAlbums:401 need to refresh access_token');
+  }
   if (data.error) {
     // Error occured during the request. Albums could not be loaded.
+    console.log('getAlbums: libraryApiGetAlbums', data);
     return NextResponse.json({
       error: 'Could not fetch from Google API, see logs',
     });
