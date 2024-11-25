@@ -17,6 +17,8 @@ export const authConfig: NextAuthConfig = {
           access_type: 'offline',
           response_type: 'code',
           scope:
+            // scope authorizes us to read google photos api.  New way in 2025
+            // https://developers.google.com/identity/oauth2/web/guides/migration-to-gis#authorization-code-flow
             'openid profile email https://www.googleapis.com/auth/photoslibrary.readonly',
         },
       },
@@ -41,13 +43,13 @@ export const authConfig: NextAuthConfig = {
     },
     session({ session, token }) {
       if (session.user && token.given_name) {
-        // TODO: figure out how to fix: Type error: Type '{}' is not assignable to type 'string'.
+        // TODO: figure out how to fix: Property 'given_name' does not exist on type 'AdapterUser & User'.
         // TODO: resolve after next-auth 5 is out of beta
         // @ts-expect-error: Should be assignable
         session.user.given_name = token.given_name;
       }
       if (session.user && token.access_token) {
-        // TODO: figure out how to fix: Type error: Type '{}' is not assignable to type 'string'.
+        // TODO: figure out how to fix: Property 'access_token' does not exist on type 'AdapterUser & User'
         // TODO: resolve after next-auth 5 is out of beta
         // similar fixed: https://github.com/nextauthjs/next-auth/issues/9253#issuecomment-2314104438
         // @ts-expect-error: Should be assignable

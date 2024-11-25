@@ -1,4 +1,5 @@
-// import * as React from 'react';
+'use client';
+
 // https://nextjs.org/docs/pages/building-your-application/optimizing/scripts
 import Script from 'next/script';
 import React from 'react';
@@ -7,22 +8,21 @@ import React from 'react';
 import '@/styles/handsontable.full.min.css';
 
 // import { cn } from '@/lib/utils';
-// import { auth, signOut } from '@/auth';
 
 export default function AlbumsDetail() {
   return (
-    <>
-      <div className='grid grid-cols-1 xl:grid-cols-1 gap-6 px-4'>
-        <p className='w-600 h-0 text-white bg-white'>
-          --------- --------- --------- --------- --------- --------- ---------
-        </p>
-        <div id='album-details' className='w-600'>
-          Click table column header to sort.
-        </div>
+    <div className='grid grid-cols-1 xl:grid-cols-1 gap-6 px-4'>
+      <p className='w-600 h-0 text-white bg-white'>
+        --------- --------- --------- --------- --------- --------- ---------
+      </p>
+      <div id='album-details' className='w-600'>
+        Click table column header to sort.
       </div>
       <Script
         src='https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js'
         onLoad={() => {
+          // @ts-expect-error: hack for 1.5 album-details.js, remove in 2.0
+          window.handsontableJsLoaded = true;
           console.log('handsontable.full.min.js has loaded');
         }}
       />
@@ -35,11 +35,11 @@ export default function AlbumsDetail() {
       />
       <Script
         src='/js/album-details.js'
-        strategy='afterInteractive'
+        strategy='lazyOnload'
         onLoad={() => {
           console.log('album-details.js has loaded');
         }}
       />
-    </>
+    </div>
   );
 }

@@ -25,6 +25,22 @@ async function page() {
       <div>This is my account page</div>
       <pre className='p-2 rounded-md'>{JSON.stringify(userInfo, null, 2)}</pre>
       <p>
+        This site brought to you by the following code{' '}
+        <a
+          href='https://github.com/chadn/gphotos-albums/'
+          className={`${linkStyle}`}
+        >
+          github.com/chadn/gphotos-albums
+        </a>
+      </p>
+      <p>
+        Maybe you can{' '}
+        <a href='/_src' className={`${linkStyle}`}>
+          browse the source code for this production release
+        </a>
+      </p>
+      <p> </p>
+      <p>
         Also see{' '}
         <a href='/components' className={`${linkStyle}`}>
           boilerplate components

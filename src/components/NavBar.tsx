@@ -33,6 +33,8 @@ export default async function NavBar() {
                     height={30}
                   />
                 </a>
+                {/* @ts-expect-error: Property 'given_name' does not exist on type 'User'. */}
+                <span>{session.user.given_name || ''}</span>
                 <button
                   className={cn(
                     'inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white',

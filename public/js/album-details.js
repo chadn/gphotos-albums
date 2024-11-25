@@ -30,7 +30,7 @@ function getAlbumData(cb) {
     url: '/api/getAlbums',
     dataType: 'json',
     success: (data) => {
-      console.log('Loaded albums: ' + data.albums);
+      //console.log('Loaded albums: ' + data.albums);
       data.totalMediaItemsCount = 0;
       data.sharedAlbums = false;
       $.each(data.albums, (i, item) => {
@@ -92,8 +92,20 @@ function initHandsomeTable(albumData) {
   return hot;
 }
 
-$(document).ready(() => {
-  let albumData = [];
+$(document).ready(async () => {
+  if (window.handsontableJsLoaded) {
+    console.log('jquery document ready, handsontableJsLoaded');
+  } else {
+    console.log('jquery document ready, waiting on handsontableJsLoaded');
+    await sleep(500); // Wait for 0.5 seconds
+  }
+  let albumData = [
+    {
+      number: 0,
+      titleUrl: 'FETCHING ALBUMS .... (takes 5-20 seconds)',
+      mediaItemsCount: '0',
+    },
+  ];
 
   hideError();
   showLoadingDialog();
@@ -103,7 +115,19 @@ $(document).ready(() => {
 
   window.hot = initHandsomeTable(albumData);
   getAlbumData((data) => {
-    window.hot.updateData(data.albums);
+    console.log(
+      `getAlbumData() returned ${data.totalMediaItemsCount} total items.`
+    );
+    if (data.error) {
+      albumData[0].titleUrl = 'Error - Try logout/login again';
+      window.hot.updateData(albumData);
+      console.log('getAlbumData() returned error: ', data.error);
+    } else {
+      window.hot.updateData(data.albums);
+      console.log(
+        `getAlbumData() returned ${data.totalMediaItemsCount} total items.`
+      );
+    }
     //console.log('hot.updateData()', JSON.stringify(data.albums));
     //window.hot.render();
     $('#total-num-items').text(data.totalMediaItemsCount);
