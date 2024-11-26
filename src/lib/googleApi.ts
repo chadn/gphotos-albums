@@ -106,6 +106,7 @@ export class PhotosApi {
     if (401 == response.status) {
       // unauthorized
       if (this.authRetries--) {
+        console.log('fetchAlbums status is 401, trying refreshAccessToken');
         const isRefreshed = await this.refreshAccessToken();
         if (isRefreshed) {
           return await this.fetchAlbums(parameters);
@@ -115,10 +116,13 @@ export class PhotosApi {
           );
         }
       } else {
+        console.log('fetchAlbums status is 401, no refreshAccessToken');
         throw new Error(
           '401 Unauthorized, already retried, maybe logout then login'
         );
       }
+    } else {
+      console.log('fetchAlbums status is NOT 401');
     }
     if (!response.ok) {
       const result = await response.json();
