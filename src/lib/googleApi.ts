@@ -82,7 +82,9 @@ export class PhotosApi {
     } catch (err) {
       // Log the error and prepare to return it.
       ret.error = JSON.stringify(err);
-      console.error(JSON.stringify({ 'libraryApiGetAlbums Error': err }));
+      console.error(
+        JSON.stringify({ 'libraryApiGetAlbums Error': err, err: ret.error })
+      );
     }
 
     console.debug(
@@ -93,6 +95,8 @@ export class PhotosApi {
   };
 
   fetchAlbums = async (parameters: URLSearchParams): Promise<Response> => {
+    console.log('fetchAlbums parameters:', parameters);
+
     const response = await fetch(
       apiConfig.apiEndpoint + '/v1/albums?' + parameters,
       {
@@ -126,8 +130,8 @@ export class PhotosApi {
     }
     if (!response.ok) {
       const result = await response.json();
-      console.warn('libraryApiGetAlbums - fetch not ok.');
-      console.debug('libraryApiGetAlbums - fetch not ok:', {
+      console.warn('libraryApiGetAlbums() fetch not ok.');
+      console.debug('libraryApiGetAlbums() fetch not ok:', {
         responseJson: result,
         response: response,
       });
