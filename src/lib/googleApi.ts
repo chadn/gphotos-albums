@@ -18,98 +18,157 @@ interface AlbumData {
 }
 
 interface GetAlbumsReturn {
-  statusCode: number;
   albums: AlbumData[];
   error: string;
 }
 
-/*
- * @description Calls the Google Photos API to get all albums
- * @param {string} access_token - token supplied by Google to use API
- * @returns {GetAlbumsReturn}
- */
-export async function libraryApiGetAlbums(
-  access_token: string
-): Promise<GetAlbumsReturn> {
-  const ret: GetAlbumsReturn = {
-    statusCode: 0,
-    albums: [],
-    error: '',
-  };
-  const parameters = new URLSearchParams();
-  parameters.append('pageSize', apiConfig.albumPageSize);
-  console.debug(
-    `Using API cmd: ${apiConfig.apiEndpoint}/v1/albums?${parameters}`
-  );
+export class PhotosApi {
+  authRetries = 1;
+  client_id = process.env.AUTH_GOOGLE_ID;
+  client_secret = process.env.AUTH_GOOGLE_SECRET;
 
-  try {
-    // Loop while there is a nextpageToken property in the response until all
-    // albums have been listed.
-    do {
-      console.debug(`Loading albums. Received so far: ${ret.albums.length}`);
-      // Make a GET request to load the albums with optional parameters (the
-      // pageToken if set).
-      const response = await fetch(
-        apiConfig.apiEndpoint + '/v1/albums?' + parameters,
-        {
-          method: 'get',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + access_token,
-          },
-        }
-      );
-      ret.statusCode = response.status;
-      if (!response.ok) {
+  constructor(
+    public access_token: string,
+    public refresh_token: string,
+    public useCache: boolean
+  ) {}
+
+  /*
+   * @description Calls the Google Photos API to get all albums
+   * @param {string} access_token - token supplied by Google to use API
+   * @returns {GetAlbumsReturn}
+   */
+  libraryApiGetAlbums = async (): Promise<GetAlbumsReturn> => {
+    const ret: GetAlbumsReturn = {
+      albums: [],
+      error: '',
+    };
+    const parameters = new URLSearchParams();
+    parameters.append('pageSize', apiConfig.albumPageSize);
+    console.debug(
+      `Using API cmd: ${apiConfig.apiEndpoint}/v1/albums?${parameters}`
+    );
+
+    try {
+      // Loop while there is a nextpageToken property in the response until all
+      // albums have been listed.
+      do {
+        console.debug(`Loading albums. Received so far: ${ret.albums.length}`);
+        // Make a GET request to load the albums with optional parameters (the
+        // pageToken if set).
+        const response = await this.fetchAlbums(parameters);
+        //console.debug('libraryApiGetAlbums - fetch ok');
+
         const result = await response.json();
-        console.warn('libraryApiGetAlbums - fetch not ok.');
-        console.debug('libraryApiGetAlbums - fetch not ok:', {
-          responseJson: result,
-          response: response,
-        });
-        // Throw a StatusError if a non-OK HTTP status was returned.
-        let message = '';
-        try {
-          // Try to parse the response body as JSON, in case the server returned a useful response.
-          message = await response.json();
-        } catch (err) {
-          // Ignore if no JSON payload was retrieved and use the status text instead.
+
+        //console.debug('Response', result);
+
+        if (result && result.albums) {
+          //console.log(`Number of albums received: ${result.albums.length}`);
+          // Parse albums and add them to the list, skipping empty entries.
+          const items = result.albums.filter((x: AlbumData) => !!x);
+
+          ret.albums = ret.albums.concat(items);
         }
-        throw new Error(`${response.status} ${response.statusText} ${message}`);
+        if (result.nextPageToken) {
+          parameters.set('pageToken', result.nextPageToken);
+        } else {
+          parameters.delete('pageToken');
+        }
+
+        // Loop until all albums have been listed and no new nextPageToken is
+        // returned.
+      } while (parameters.has('pageToken'));
+    } catch (err) {
+      // Log the error and prepare to return it.
+      ret.error = JSON.stringify(err);
+      console.error(JSON.stringify({ 'libraryApiGetAlbums Error': err }));
+    }
+
+    console.debug(
+      JSON.stringify({ 'API response of first album': ret.albums[0] })
+    );
+    console.log(`${ret.albums.length} Albums loaded from Google Photos API`);
+    return ret;
+  };
+
+  fetchAlbums = async (parameters: URLSearchParams): Promise<Response> => {
+    const response = await fetch(
+      apiConfig.apiEndpoint + '/v1/albums?' + parameters,
+      {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.access_token,
+        },
       }
-      //console.debug('libraryApiGetAlbums - fetch ok');
-
-      const result = await response.json();
-
-      //console.debug('Response', result);
-
-      if (result && result.albums) {
-        //console.log(`Number of albums received: ${result.albums.length}`);
-        // Parse albums and add them to the list, skipping empty entries.
-        const items = result.albums.filter((x: AlbumData) => !!x);
-
-        ret.albums = ret.albums.concat(items);
-      }
-      if (result.nextPageToken) {
-        parameters.set('pageToken', result.nextPageToken);
+    );
+    if (401 == response.status) {
+      // unauthorized
+      if (this.authRetries--) {
+        const isRefreshed = await this.refreshAccessToken();
+        if (isRefreshed) {
+          return await this.fetchAlbums(parameters);
+        } else {
+          throw new Error(
+            '401 Unauthorized, could refresh token, maybe logout then login'
+          );
+        }
       } else {
-        parameters.delete('pageToken');
+        throw new Error(
+          '401 Unauthorized, already retried, maybe logout then login'
+        );
       }
+    }
+    if (!response.ok) {
+      const result = await response.json();
+      console.warn('libraryApiGetAlbums - fetch not ok.');
+      console.debug('libraryApiGetAlbums - fetch not ok:', {
+        responseJson: result,
+        response: response,
+      });
+      // Throw a StatusError if a non-OK HTTP status was returned.
+      let message = '';
+      try {
+        // Try to parse the response body as JSON, in case the server returned a useful response.
+        message = await response.json();
+      } catch (err) {
+        // Ignore if no JSON payload was retrieved and use the status text instead.
+      }
+      throw new Error(`${response.status} ${response.statusText} ${message}`);
+    }
+    return response;
+  };
 
-      // Loop until all albums have been listed and no new nextPageToken is
-      // returned.
-    } while (parameters.has('pageToken'));
-  } catch (err) {
-    // Log the error and prepare to return it.
-    ret.error = JSON.stringify(err);
-    console.error(JSON.stringify({ 'libraryApiGetAlbums Error': err }));
-  }
+  /*
+   * @description Uses refresh_token to get a new access_token.
+   * @returns {boolean} true if successfully updated access_token
+   */
 
-  console.debug(
-    JSON.stringify({ 'API response of first album': ret.albums[0] })
-  );
-  console.log(`${ret.albums.length} Albums loaded from Google Photos API`);
-  return ret;
+  refreshAccessToken = async (): Promise<boolean> => {
+    // https://developers.google.com/identity/protocols/oauth2/web-server#offline
+    const rawResponse = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        client_id: this.client_id,
+        client_secret: this.client_secret,
+        refresh_token: this.refresh_token,
+        grant_type: 'refresh_token',
+      }),
+    });
+    console.log('refreshAccessToken rawResponse', rawResponse);
+    const content = await rawResponse.json();
+    if (200 == rawResponse.status) {
+      this.access_token = content.access_token;
+      return true;
+    } else {
+      return false;
+    }
+  };
 }
 
 /*
@@ -118,7 +177,6 @@ export async function libraryApiGetAlbums(
  */
 export function getFakeAlbumsData(): GetAlbumsReturn {
   return {
-    statusCode: 200,
     albums: [
       {
         id: 'AC7OsWZSvKmd_BPEjRBdfHJ5K0MM4UdIqGjVgYLomvo7p7_ztWqDiMy4tSZuspFnS7z2E33Ny69t',

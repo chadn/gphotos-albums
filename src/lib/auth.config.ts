@@ -14,7 +14,7 @@ export const authConfig: NextAuthConfig = {
       authorization: {
         params: {
           prompt: 'consent',
-          access_type: 'offline',
+          access_type: 'offline', // should auto refresh access tokens
           response_type: 'code',
           scope:
             // scope authorizes us to read google photos api.  New way in 2025
