@@ -41,11 +41,11 @@ export const authConfig: NextAuthConfig = {
       if (token && account?.refresh_token) {
         token.refresh_token ??= account.refresh_token;
       }
-      let rlen: number = 0;
+      let rlen = 0;
       if (token.refresh_token && 'string' == typeof token.refresh_token) {
         rlen = token.refresh_token.length;
       }
-      let alen: number = 0;
+      let alen = 0;
       if (token.access_token && 'string' == typeof token.access_token) {
         alen = token.access_token.length;
       }
