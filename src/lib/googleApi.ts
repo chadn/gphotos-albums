@@ -107,27 +107,23 @@ export class PhotosApi {
         },
       }
     );
+    console.log('fetchAlbums status: ', response.status);
     if (401 == response.status) {
       // unauthorized
       if (this.authRetries--) {
-        console.log('fetchAlbums status is 401, trying refreshAccessToken');
         const isRefreshed = await this.refreshAccessToken();
         if (isRefreshed) {
           return await this.fetchAlbums(parameters);
         } else {
           throw new Error(
-            '401 Unauthorized, could refresh token, maybe logout then login'
+            '401 Unauthorized, could not refresh token, maybe logout then login'
           );
         }
       } else {
-        console.log('fetchAlbums status is 401, no refreshAccessToken');
         throw new Error(
           '401 Unauthorized, already retried, maybe logout then login'
         );
       }
-    } else {
-      console.log('fetchAlbums status is NOT 401');
-      await this.refreshAccessToken(); // TODO delme
     }
     if (!response.ok) {
       const result = await response.json();
@@ -136,15 +132,7 @@ export class PhotosApi {
         responseJson: result,
         response: response,
       });
-      // Throw a StatusError if a non-OK HTTP status was returned.
-      let message = '';
-      try {
-        // Try to parse the response body as JSON, in case the server returned a useful response.
-        message = await response.json();
-      } catch (err) {
-        // Ignore if no JSON payload was retrieved and use the status text instead.
-      }
-      throw new Error(`${response.status} ${response.statusText} ${message}`);
+      throw new Error(`${response.status} ${response.statusText} ${result}`);
     }
     return response;
   };
