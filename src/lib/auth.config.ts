@@ -41,7 +41,11 @@ export const authConfig: NextAuthConfig = {
       if (token && account?.refresh_token) {
         token.refresh_token ??= account.refresh_token;
       }
-      console.debug('auth.ts jwt returning: token', JSON.stringify(token));
+      console.debug(
+        `jwt token ${token.refresh_token.length}r ${
+          token.access_token.length
+        }a, ${JSON.stringify(token)}`
+      );
       return token;
     },
     session({ session, token }) {
