@@ -155,21 +155,22 @@ export class PhotosApi {
 
   refreshAccessToken = async (): Promise<boolean> => {
     // https://developers.google.com/identity/protocols/oauth2/web-server#offline
+    const reqBody = {
+      client_id: this.client_id,
+      client_secret: this.client_secret,
+      refresh_token: this.refresh_token,
+      grant_type: 'refresh_token',
+    };
     const rawResponse = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        client_id: this.client_id,
-        client_secret: this.client_secret,
-        refresh_token: this.refresh_token,
-        grant_type: 'refresh_token',
-      }),
+      body: JSON.stringify(reqBody),
     });
-    console.log('refreshAccessToken rawResponse', rawResponse);
     const content = await rawResponse.json();
+    console.log('refreshAccessToken', rawResponse, content, reqBody);
     if (200 == rawResponse.status) {
       this.access_token = content.access_token;
       return true;
