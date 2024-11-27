@@ -127,6 +127,7 @@ export class PhotosApi {
       }
     } else {
       console.log('fetchAlbums status is NOT 401');
+      await this.refreshAccessToken(); // TODO delme
     }
     if (!response.ok) {
       const result = await response.json();
