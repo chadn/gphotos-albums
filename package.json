@@ -1,6 +1,6 @@
 {
   "name": "gphotos-albums",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "View all your Google Photos Albums using API",
   "private": true,
   "license": "Apache-2.0",
