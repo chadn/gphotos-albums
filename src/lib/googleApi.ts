@@ -94,9 +94,11 @@ export class PhotosApi {
     return ret;
   };
 
+  /*
+   * @description fetches albums info and will refresh access_token if need be
+   * @param {URLSearchParams} parameters - url parameters
+   */
   fetchAlbums = async (parameters: URLSearchParams): Promise<Response> => {
-    console.log('fetchAlbums parameters:', parameters);
-
     const response = await fetch(
       apiConfig.apiEndpoint + '/v1/albums?' + parameters,
       {
@@ -107,7 +109,6 @@ export class PhotosApi {
         },
       }
     );
-    console.log('fetchAlbums status: ', response.status);
     if (401 == response.status) {
       // unauthorized
       if (this.authRetries--) {
@@ -139,9 +140,9 @@ export class PhotosApi {
 
   /*
    * @description Uses refresh_token to get a new access_token.
+   * If authjs was not buggy, could do https://authjs.dev/guides/refresh-token-rotation
    * @returns {boolean} true if successfully updated access_token
    */
-
   refreshAccessToken = async (): Promise<boolean> => {
     // https://developers.google.com/identity/protocols/oauth2/web-server#offline
     const reqBody = {
@@ -159,7 +160,7 @@ export class PhotosApi {
       body: JSON.stringify(reqBody),
     });
     const content = await rawResponse.json();
-    console.log('refreshAccessToken', rawResponse, content, reqBody);
+    //console.log('refreshAccessToken', rawResponse, content, reqBody);
     if (200 == rawResponse.status) {
       this.access_token = content.access_token;
       return true;

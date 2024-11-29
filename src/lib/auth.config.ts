@@ -17,7 +17,7 @@ export const authConfig: NextAuthConfig = {
           access_type: 'offline', // should auto refresh access tokens
           response_type: 'code',
           scope:
-            // scope authorizes us to read google photos api.  New way in 2025
+            // scope authorizes us to read google photos api.  Changes in 2025
             // https://developers.google.com/identity/oauth2/web/guides/migration-to-gis#authorization-code-flow
             'openid profile email https://www.googleapis.com/auth/photoslibrary.readonly',
         },
@@ -41,6 +41,7 @@ export const authConfig: NextAuthConfig = {
       if (token && account?.refresh_token) {
         token.refresh_token ??= account.refresh_token;
       }
+      /*
       let rlen = 0;
       if (token.refresh_token && 'string' == typeof token.refresh_token) {
         rlen = token.refresh_token.length;
@@ -50,6 +51,7 @@ export const authConfig: NextAuthConfig = {
         alen = token.access_token.length;
       }
       console.debug(`jwt token ${rlen}r ${alen}a, ${JSON.stringify(token)}`);
+      */
       return token;
     },
     session({ session, token }) {
@@ -73,26 +75,22 @@ export const authConfig: NextAuthConfig = {
         // @ts-expect-error: Should be assignable
         session.user.refresh_token = token.refresh_token;
       }
-      console.debug(
-        'auth.ts session',
-        JSON.stringify({
-          token: token,
-          session: session,
-        })
-      );
+      //console.debug('auth.ts session', session);
       return session;
     },
   },
 };
 
 // import { type DefaultSession } from 'next-auth';
+// import { JWT } from "next-auth/jwt"
 //import type { AdapterUser } from 'next-auth/core/adapters';
 // Below module augmentation did not work for me, still had typescript errors with access_token
 // TODO: resolve after next-auth 5 is out of beta
 // similar fixed: https://github.com/nextauthjs/next-auth/issues/9253#issuecomment-2314104438
 //
+// export global {
 // https://authjs.dev/getting-started/typescript#module-augmentation
-// declare module 'next-auth' {
+//  module 'next-auth' {
 //   /**
 //    * Returned by `auth`, `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
 //    */
@@ -111,3 +109,5 @@ export const authConfig: NextAuthConfig = {
 //     } & DefaultSession['user'];
 //   }
 // }
+//
+// export {}; // you need to have an export statement, even if you are not exporting anything
