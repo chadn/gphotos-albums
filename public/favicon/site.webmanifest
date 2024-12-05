@@ -1,6 +1,6 @@
 {
-  "name": "GetMovin",
-  "short_name": "GetMovin",
+  "name": "GPhotos Albums",
+  "short_name": "GPhotos_Albums",
   "icons": [
     {
       "src": "/favicon/web-app-manifest-192x192.png",
@@ -16,6 +16,6 @@
     }
   ],
   "theme_color": "#ffffff",
-  "background_color": "#038900",
+  "background_color": "#ffffff",
   "display": "standalone"
 }
