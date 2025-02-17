@@ -70,12 +70,6 @@ Must click `Advanced` (which changes to `Hide Advanced`) and then click [Go to g
 After that, you will be notified of the permissions requested. It's all readonly, and you can click continue. Here are the permissions explanded out:
 ![google-oauth-permissions-window-vercel](https://github.com/user-attachments/assets/0935e249-5769-4d6f-a3a9-fccc3b79aa06)
 
-## Setup
-
-Feel free to fork https://github.com/chadn/gphotos-albums/
-
-Want to make a change? make a PR - but reach out before doing too much work
-
 ## Goals
 
 Goals of the Project
@@ -91,3 +85,110 @@ Goals of the Project
 
 More background
 https://chadnorwood.com/2024/04/11/google-photos-api-and-flickr/
+
+## Setup
+
+Feel free to fork https://github.com/chadn/gphotos-albums/
+
+Want to make a change? make a PR - but reach out before doing too much work
+
+## Project Architecture
+
+### Directory Structure
+
+```
+src/
+├── app/                   # Next.js 14 App Router pages and API routes
+│   ├── api/               # API route handlers
+│   ├── albums/            # Albums page
+│   ├── components/        # Page-specific components
+│   └── layout.tsx         # Root layout
+├── components/            # Reusable React components
+│   ├── buttons/            # Button components
+│   │   ├── Button.tsx       # Base button component
+│   │   ├── IconButton.tsx   # Button with icon
+│   │   └── TextButton.tsx   # Text-only button
+│   ├── links/               # Link components
+│   │   ├── ArrowLink.tsx    # Link with arrow indicator
+│   │   ├── ButtonLink.tsx   # Link styled as button
+│   │   ├── IconLink.tsx     # Link with icon
+│   │   ├── PrimaryLink.tsx  # Primary styled link
+│   │   ├── UnderlineLink.tsx # Link with underline effect
+│   │   └── UnstyledLink.tsx # Base link component
+│   ├── AlbumsTable.tsx   # Albums list display component
+│   ├── ItemsCount.tsx    # Counter for items
+│   ├── LoginButton.tsx   # Authentication button
+│   ├── NavBar.tsx        # Navigation component
+│   ├── NextImage.tsx     # Optimized image component
+│   └── Skeleton.tsx      # Loading placeholder
+├── lib/                  # Core utilities and configurations
+│   ├── auth.config.ts    # Authentication configuration
+│   ├── googleApi.ts      # Google Photos API integration
+│   └── utils.ts          # Utility functions
+├── styles/               # Global styles and Tailwind configuration
+├── types/                # TypeScript type definitions
+├── constant/             # Constants and configuration
+├── middleware.ts         # Next.js middleware for auth and routing
+└── routes.ts             # Route definitions
+```
+
+### Key Components
+
+1. **Authentication Flow**
+
+   - Uses Auth.js (formerly NextAuth.js) for Google OAuth2
+   - Middleware-based route protection
+   - Secure token handling and refresh mechanism
+
+1. **Google Photos Integration**
+
+   - REST API integration with Google Photos Library API
+   - Token refresh handling
+   - Rate limiting and error handling
+   - Caching for performance optimization
+
+1. **Frontend Architecture**
+
+   - React 18 with Next.js 14 App Router
+   - Server and Client Components
+   - Tailwind CSS for styling
+   - Responsive design
+   - Accessibility features
+
+1. **Next.js Route Groups**
+
+   - Authentication-required routes in `(auth)` group
+   - Public routes at root level
+   - API routes in `api` directory
+
+1. **Next.js Middleware Protection**
+
+   ```typescript
+   // middleware.ts handles route protection
+   - Protected routes require authentication
+   - API routes have CORS and rate limiting
+   - Auth routes handle OAuth flow
+   ```
+
+1. **Development Tools**
+   - TypeScript for type safety
+   - ESLint and Prettier for code quality
+   - Jest for testing
+   - Husky for git hooks
+   - Conventional commits
+
+### Performance Optimizations
+
+- Server-side rendering where appropriate
+- Image optimization with Next.js Image component
+- API response caching
+- Lazy loading of components
+- Optimized bundle size
+
+### Security Measures
+
+- OAuth2 with secure token handling
+- Protected API routes
+- Environment variable management
+- CORS configuration
+- CSP headers
