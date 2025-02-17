@@ -114,7 +114,7 @@ export class PhotosApi {
       if (this.authRetries--) {
         const isRefreshed = await this.refreshAccessToken();
         if (isRefreshed) {
-          authRetries = 1; // reset retries
+          this.authRetries = 1; // reset retries
           return await this.fetchAlbums(parameters);
         } else {
           throw new Error(
